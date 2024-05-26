@@ -70,7 +70,7 @@ class Program
         Console.WriteLine(" ");
 
         // Função para saber a força do time baseado na classificação da Temporada Regular 23/24
-        int TeamRookieForce = ForceRookieTeam();
+        int TeamRookieForce = ForceRookieTeam(NbaTeamSelected);
 
         // Variáveis que serão utilizadas para saber o Rookie Year
         int rookieGamesPlayed = 0,
@@ -84,9 +84,6 @@ class Program
         RookieYear(ref TeamRookieForce, ref rookieGamesPlayed, ref rookiePPG, ref rookieRPG, ref rookieAPG, ref ROY);
 
         // Imprimindo resultado da Rookie Season
-        Console.WriteLine(" ");
-        Console.WriteLine("==============================================================================");
-        Console.WriteLine(" ");
         Console.WriteLine($"O jogador {playerName} em seu Rookie Year jogou {rookieGamesPlayed} jogos e obteve as seguintes médias:");
         Console.WriteLine(" ");
         Console.WriteLine($"{rookiePPG} pontos por jogo");
@@ -213,7 +210,7 @@ class Program
         } else if (TeamRookieForce == 2)
         {
             rookieRPG = random.Next(3, 6);
-        } else (TeamRookieForce == 3)
+        } else if (TeamRookieForce == 3) 
         {
             rookieRPG = random.Next(4,7);
         }
@@ -225,7 +222,7 @@ class Program
         } else if (TeamRookieForce == 2)
         {
             rookieAPG = random.Next(3, 6);
-        } else (TeamRookieForce == 3)
+        } else if (TeamRookieForce == 3)
         {
             rookieAPG = random.Next(4,7);
         }
