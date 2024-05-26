@@ -4,8 +4,22 @@ class Program
 {
     public static void Main(string[] args)
     {
+
+        Console.WriteLine(" ");
+        Console.WriteLine("==============================================================================");
+        Console.WriteLine(" ");
+
+        Console.WriteLine("Bem vindo ao simulador de carreira NBA!");
+
+        Console.WriteLine(" ");
+        Console.WriteLine("==============================================================================");
+        Console.WriteLine(" ");
+
         // Função para obter o nome do jogador
         string playerName = GetPlayerName();
+        Console.WriteLine(" ");
+        Console.WriteLine("==============================================================================");
+        Console.WriteLine(" ");
 
         // Vetor de Times
         string[] AllNbaTeams = new string[]
@@ -48,17 +62,29 @@ class Program
 
         // Função Draft
         string DraftInfos = Draft(ref PickDraft, ref NbaTeamSelected, AllNbaTeams, playerName);
+
         Console.WriteLine(DraftInfos);
+
+        Console.WriteLine(" ");
+        Console.WriteLine("==============================================================================");
+        Console.WriteLine(" ");
 
     }
 
     public static string GetPlayerName() 
     {
+        string PlayerName = "";
+#pragma warning disable CS8600
+        
         do 
         {
             Console.WriteLine("Qual nome do seu jogador?");
-            string PlayerName = Console.ReadLine();
-        } while (GetPlayerName = "");
+            PlayerName = Console.ReadLine();
+
+            if (PlayerName == null) PlayerName = "";
+#pragma warning restore CS8600
+
+        } while (string.IsNullOrEmpty(PlayerName));
         
 
         return PlayerName;

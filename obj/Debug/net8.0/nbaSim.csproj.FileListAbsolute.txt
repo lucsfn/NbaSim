@@ -2,3 +2,13 @@ C:\Users\Isaias\Desktop\ATP\nbaSim\obj\Debug\net8.0\nbaSim.GeneratedMSBuildEdito
 C:\Users\Isaias\Desktop\ATP\nbaSim\obj\Debug\net8.0\nbaSim.AssemblyInfoInputs.cache
 C:\Users\Isaias\Desktop\ATP\nbaSim\obj\Debug\net8.0\nbaSim.AssemblyInfo.cs
 C:\Users\Isaias\Desktop\ATP\nbaSim\obj\Debug\net8.0\nbaSim.csproj.CoreCompileInputs.cache
+C:\Users\Isaias\Desktop\ATP\nbaSim\bin\Debug\net8.0\nbaSim.exe
+C:\Users\Isaias\Desktop\ATP\nbaSim\bin\Debug\net8.0\nbaSim.deps.json
+C:\Users\Isaias\Desktop\ATP\nbaSim\bin\Debug\net8.0\nbaSim.runtimeconfig.json
+C:\Users\Isaias\Desktop\ATP\nbaSim\bin\Debug\net8.0\nbaSim.dll
+C:\Users\Isaias\Desktop\ATP\nbaSim\bin\Debug\net8.0\nbaSim.pdb
+C:\Users\Isaias\Desktop\ATP\nbaSim\obj\Debug\net8.0\nbaSim.dll
+C:\Users\Isaias\Desktop\ATP\nbaSim\obj\Debug\net8.0\refint\nbaSim.dll
+C:\Users\Isaias\Desktop\ATP\nbaSim\obj\Debug\net8.0\nbaSim.pdb
+C:\Users\Isaias\Desktop\ATP\nbaSim\obj\Debug\net8.0\nbaSim.genruntimeconfig.cache
+C:\Users\Isaias\Desktop\ATP\nbaSim\obj\Debug\net8.0\ref\nbaSim.dll

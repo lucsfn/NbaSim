@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("nbaSim")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+967059f4c86b7b4b7838cfd0a1411a99e7751061")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+910d943bb0b32fbf9d26b39e1c03fd5623dfe817")]
 [assembly: System.Reflection.AssemblyProductAttribute("nbaSim")]
 [assembly: System.Reflection.AssemblyTitleAttribute("nbaSim")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
