@@ -69,8 +69,10 @@ class Program
         Console.WriteLine("==============================================================================");
         Console.WriteLine(" ");
 
+        // Função para saber a força do time baseado na classificação da Temporada Regular 23/24
         int TeamRookieForce = ForceRookieTeam();
 
+        // Variáveis que serão utilizadas para saber o Rookie Year
         int rookieGamesPlayed = 0,
             rookiePPG = 0,
             rookieRPG = 0,
@@ -78,8 +80,30 @@ class Program
 
         bool ROY = false;
 
+        // Função que simula o ROY
         RookieYear(ref TeamRookieForce, ref rookieGamesPlayed, ref rookiePPG, ref rookieRPG, ref rookieAPG, ref ROY);
 
+        // Imprimindo resultado da Rookie Season
+        Console.WriteLine(" ");
+        Console.WriteLine("==============================================================================");
+        Console.WriteLine(" ");
+        Console.WriteLine($"O jogador {playerName} em seu Rookie Year jogou {rookieGamesPlayed} jogos e obteve as seguintes médias:");
+        Console.WriteLine(" ");
+        Console.WriteLine($"{rookiePPG} pontos por jogo");
+        Console.WriteLine($"{rookieRPG} rebotes por jogo");
+        Console.WriteLine($"{rookieAPG} assistências por jogo");
+        Console.WriteLine(" ");
+        if (ROY)
+        {
+            Console.WriteLine ("Além de ganahr o ROY!");
+        } else
+        {
+            Console.WriteLine("Além disso, o jogador não ganhou o ROY.");
+        }
+        Console.WriteLine(" ");
+        Console.WriteLine("==============================================================================");
+        Console.WriteLine(" ");
+        
     }
 
     public static string GetPlayerName() 
@@ -157,5 +181,72 @@ class Program
     public static void RookieYear(ref int TeamRookieForce, ref int rookieGamesPlayed, ref int rookiePPG, ref int rookieRPG, ref int rookieAPG, ref bool ROY)
     {
         Random random = new Random();
+
+        // Obtendo o número de jogos
+        if (TeamRookieForce == 1)
+        {
+            rookieGamesPlayed = random.Next(30, 61);
+        } else if (TeamRookieForce == 2)
+        {
+            rookieGamesPlayed = random.Next(55, 76);
+        } else 
+        {
+            rookieGamesPlayed = random.Next(60, 80);
+        }
+
+        // Obtendo o número de pontos por jogo   
+        if (TeamRookieForce == 1)
+        {
+            rookiePPG = random.Next(5, 13);
+        } else if (TeamRookieForce == 2)
+        {
+            rookiePPG = random.Next(10, 16);
+        } else 
+        {
+            rookiePPG = random.Next(13, 23);
+        }
+
+        // Obtendo o número de rebotes por jogo   
+        if (TeamRookieForce == 1)
+        {
+            rookieRPG = random.Next(2, 4);
+        } else if (TeamRookieForce == 2)
+        {
+            rookieRPG = random.Next(3, 6);
+        } else (TeamRookieForce == 3)
+        {
+            rookieRPG = random.Next(4,7);
+        }
+    
+        // Obtendo o número de assistências por jogo
+        if (TeamRookieForce == 1)
+        {
+            rookieAPG = random.Next(2, 4);
+        } else if (TeamRookieForce == 2)
+        {
+            rookieAPG = random.Next(3, 6);
+        } else (TeamRookieForce == 3)
+        {
+            rookieAPG = random.Next(4,7);
+        }
+
+        int ProbWinRoy = 0;
+
+        // Calculando probabilidade de ganhar o ROY
+        if (TeamRookieForce == 1)
+        {
+            ProbWinRoy = random.Next(10, 60);
+        } else if (TeamRookieForce == 2)
+        {
+            ProbWinRoy = random.Next(30, 70);
+        } else 
+        {
+            ProbWinRoy = random.Next(40, 80);
+        }
+    
+        if (ProbWinRoy >= 50)
+        {
+            ROY = true;
+        }
     }
 }
