@@ -21,7 +21,7 @@ class Program
         Console.WriteLine("==============================================================================");
         Console.WriteLine(" ");
 
-        // Vetor de Times
+        // Array dos times da Nba
         string[] AllNbaTeams = new string[]
         {
             "Atlanta Hawks",
@@ -69,6 +69,17 @@ class Program
         Console.WriteLine("==============================================================================");
         Console.WriteLine(" ");
 
+        int TeamRookieForce = ForceRookieTeam();
+
+        int rookieGamesPlayed = 0,
+            rookiePPG = 0,
+            rookieRPG = 0,
+            rookieAPG = 0;
+
+        bool ROY = false;
+
+        RookieYear(ref TeamRookieForce, ref rookieGamesPlayed, ref rookiePPG, ref rookieRPG, ref rookieAPG, ref ROY);
+
     }
 
     public static string GetPlayerName() 
@@ -101,4 +112,50 @@ class Program
 
         return Draft;
     } 
+
+    public static int ForceRookieTeam(string NbaTeamSelected)
+    {
+        int pos = 0;
+        int forceValue = 0;
+
+        string[] TeamsClassification = {
+            // Primeiro Escalão
+            "Boston Celtics", "New York Knicks", "Milwaukee Bucks", "Cleveland Cavaliers", "Orlando Magic", 
+            "Indiana Pacers", "Philadelphia 76ers", "Miami Heat", "Chicago Bulls", "Atlanta Hawks",
+            // Segundo Escalão
+            "Brooklyn Nets", "Toronto Raptors", "Charlotte Hornets", "Washington Wizards", "Detroit Pistons", 
+            "Oklahoma City Thunder", "Denver Nuggets", "Minnesota Timberwolves", "LA Clippers", "Dallas Mavericks",
+            // Terceiro Escalão
+            "Phoenix Suns", "New Orleans Pelicans", "Los Angeles Lakers", "Sacramento Kings", "Golden State Warriors", 
+            "Houston Rockets", "Utah Jazz", "Memphis Grizzlies", "San Antonio Spurs", "Portland Trail Blazers"
+        };
+
+        for (int i = 0; i < TeamsClassification.Length; i++)
+        {
+            if (NbaTeamSelected == TeamsClassification[i])
+            {
+                pos = i+1;
+            }
+        }
+
+        if (pos <= 10)
+        {
+            forceValue = 1;
+        }
+        else if (pos <= 20)
+        {
+            forceValue = 2;
+        } else
+        {
+            forceValue = 3;
+        }
+
+        return forceValue;
+
+    }
+
+    public static void RookieYear(ref int TeamRookieForce, ref int rookieGamesPlayed, ref int rookiePPG, ref int rookieRPG, ref int rookieAPG, ref bool ROY)
+    {
+        Random random = new Random();
+    }
 }
