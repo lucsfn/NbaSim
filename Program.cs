@@ -17,6 +17,7 @@ class Program
 
         // Função para obter o nome do jogador
         string playerName = GetPlayerName();
+        string playerPosition = GetPlayerPosition();
         Console.WriteLine(" ");
         Console.WriteLine("==============================================================================");
         Console.WriteLine(" ");
@@ -61,7 +62,7 @@ class Program
         string NbaTeamSelected = "";
 
         // Função Draft
-        string DraftInfos = Draft(ref PickDraft, ref NbaTeamSelected, AllNbaTeams, playerName);
+        string DraftInfos = Draft(ref PickDraft, ref playerPosition,ref NbaTeamSelected, AllNbaTeams, playerName);
 
         Console.WriteLine(DraftInfos);
 
@@ -117,19 +118,36 @@ class Program
 #pragma warning restore CS8600
 
         } while (string.IsNullOrEmpty(PlayerName));
-        
+        Console.WriteLine(" ");      
 
         return PlayerName;
     }
 
-    public static string Draft (ref int PickDraft, ref string NbaTeamSelected, string [] AllNbaTeams, string playerName)
+    public static string GetPlayerPosition()
+    {
+        string PlayerPosition = "";
+#pragma warning disable CS8602
+        // Array com as posições válidas
+        string[] ValidPositions = { "PG", "SG", "SF", "PF", "C" };
+
+        Console.WriteLine(" ");
+        do {
+            Console.WriteLine("Digite a posição do seu jogador: \nPG (Armador)\nSG (Ala-armador)\nSF (Ala)\nPF (Ala-Pivô)\nC (Pivô)");
+            PlayerPosition = Console.ReadLine().ToUpper();
+
+        } while (!Array.Exists(ValidPositions, position => position == PlayerPosition));
+#pragma warning restore CS8602
+        return PlayerPosition;
+    }
+
+    public static string Draft (ref int PickDraft, ref string playerPosition, ref string NbaTeamSelected, string [] AllNbaTeams, string playerName)
     {
         Random random = new Random();
 
         PickDraft = random.Next(1,31);
         NbaTeamSelected = AllNbaTeams[random.Next(0,30)];
 
-        string Draft = $"O jogador {playerName} foi escolhido pelo {NbaTeamSelected} na {PickDraft}º escolha.";
+        string Draft = $"O jogador {playerName}, um {playerPosition}, foi escolhido pelo {NbaTeamSelected} na {PickDraft}º escolha.";
 
         return Draft;
     } 
@@ -232,15 +250,15 @@ class Program
         // Calculando probabilidade de ganhar o ROY
         if (TeamRookieForce == 1)
         {
-            ProbWinRoy = random.Next(10, 60);
+            ProbWinRoy = random.Next(15, 60);
         } else if (TeamRookieForce == 2)
         {
-            ProbWinRoy = random.Next(30, 70);
-        } else 
+            ProbWinRoy = random.Next(25, 70);
+        } else if (TeamRookieForce == 2)
         {
-            ProbWinRoy = random.Next(40, 80);
-        }
-    
+            ProbWinRoy = random.Next(35, 80);
+        }   
+
         if (ProbWinRoy >= 50)
         {
             ROY = true;
