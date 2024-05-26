@@ -57,6 +57,44 @@ class Program
             "Washington Wizards"
         };
 
+        // Array com os times da NBA na Conferência Leste
+        string[] EasternNbaTeams = {
+    "Atlanta Hawks",
+    "Boston Celtics",
+    "Brooklyn Nets",
+    "Charlotte Hornets",
+    "Chicago Bulls",
+    "Cleveland Cavaliers",
+    "Detroit Pistons",
+    "Indiana Pacers",
+    "Miami Heat",
+    "Milwaukee Bucks",
+    "New York Knicks",
+    "Orlando Magic",
+    "Philadelphia 76ers",
+    "Toronto Raptors",
+    "Washington Wizards"
+};
+
+        // Array com os times da NBA na Conferência Oeste
+        string[] WesternNbaTeams = {
+    "Dallas Mavericks",
+    "Denver Nuggets",
+    "Golden State Warriors",
+    "Houston Rockets",
+    "LA Clippers",
+    "Los Angeles Lakers",
+    "Memphis Grizzlies",
+    "Minnesota Timberwolves",
+    "New Orleans Pelicans",
+    "Oklahoma City Thunder",
+    "Phoenix Suns",
+    "Portland Trail Blazers",
+    "Sacramento Kings",
+    "San Antonio Spurs",
+    "Utah Jazz"
+};
+
         // Variáveis a serem utilizadas na função Draft
         int PickDraft = 0;
         string NbaTeamSelected = "";
@@ -69,6 +107,9 @@ class Program
         Console.WriteLine(" ");
         Console.WriteLine("==============================================================================");
         Console.WriteLine(" ");
+
+        // Função para determinar a conferência do time
+        string teamConference = Conference(NbaTeamSelected, EasternNbaTeams, WesternNbaTeams);
 
         // Função para saber a força do time baseado na classificação da Temporada Regular 23/24
         int TeamRookieForce = ForceRookieTeam(NbaTeamSelected);
@@ -102,6 +143,7 @@ class Program
         Console.WriteLine("==============================================================================");
         Console.WriteLine(" ");
 
+        // Imprimindo a seed e a condicção de pós-temporada
         string RookieSeed = "";
         int RookieSeasonCondition = 0;
 
@@ -160,6 +202,21 @@ class Program
 
         return Draft;
     } 
+
+    public static string Conference (string NbaTeamSelected, string [] EasternNbaTeams, string [] WesternNbaTeams)
+    {
+        string Conference = " ";
+
+        if (!Array.Exists(EasternNbaTeams), position => position == NbaTeamSelected)
+        {
+            Conference = "Leste";
+        } else 
+        {
+            Conference = "Oeste";
+        }
+
+        return Conference;
+    }
 
     public static int ForceRookieTeam (string NbaTeamSelected)
     {
