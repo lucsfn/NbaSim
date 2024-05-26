@@ -101,7 +101,16 @@ class Program
         Console.WriteLine(" ");
         Console.WriteLine("==============================================================================");
         Console.WriteLine(" ");
-        
+
+        string RookieSeed = "";
+        int RookieSeasonCondition = 0;
+
+        TeamSeed (NbaTeamSelected, TeamRookieForce, ref RookieSeed, ref RookieSeasonCondition);
+
+        Console.WriteLine(RookieSeed);
+        Console.WriteLine(" ");
+        Console.WriteLine("==============================================================================");
+        Console.WriteLine(" ");
     }
 
     public static string GetPlayerName() 
@@ -152,7 +161,7 @@ class Program
         return Draft;
     } 
 
-    public static int ForceRookieTeam(string NbaTeamSelected)
+    public static int ForceRookieTeam (string NbaTeamSelected)
     {
         int pos = 0;
         int forceValue = 0;
@@ -254,7 +263,7 @@ class Program
         } else if (TeamRookieForce == 2)
         {
             ProbWinRoy = random.Next(25, 70);
-        } else if (TeamRookieForce == 2)
+        } else if (TeamRookieForce == 3)
         {
             ProbWinRoy = random.Next(35, 80);
         }   
@@ -264,4 +273,78 @@ class Program
             ROY = true;
         }
     }
+
+    public static void TeamSeed (string NbaTeamSelected, int TeamRookieForce, ref string RookieSeed, ref int RookieSeasonCondition)
+    {
+        Random random = new Random();
+
+        int wins = 0,
+            loses = 0,
+            teamPosition = 0;
+
+        RookieSeasonCondition = 0;
+
+        if (TeamRookieForce == 1)
+        {
+            wins = random.Next(45, 66);
+        } else if (TeamRookieForce == 2)
+        {
+            wins = random.Next(30, 51);
+        } else if (TeamRookieForce == 3)
+        {
+            wins = random.Next(20, 46);
+        }
+
+        loses = 82 - wins;
+
+        if (wins >= 48)
+        {
+            teamPosition = random.Next(1, 7);
+            RookieSeasonCondition = 1;
+            RookieSeed = $"O {NbaTeamSelected} obteve uma seed de {wins} W - {loses} L e classificou para os playoffs em {teamPosition}º!";
+        } else if (wins <= 47 && wins >= 41)
+        {
+            teamPosition = random.Next(7, 11);
+            RookieSeasonCondition = 2;
+            RookieSeed = $"O {NbaTeamSelected} obteve uma seed de {wins} W - {loses} L e classificou para o play-in em {teamPosition}º!";
+        } else if (wins <= 41)
+        {
+            teamPosition = random.Next(11, 16);
+            RookieSeasonCondition = 3;
+            RookieSeed = $"O {NbaTeamSelected} obteve uma seed de {wins} W - {loses} L, ficando em {teamPosition}º e não classificando para a pós-temporada";
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
