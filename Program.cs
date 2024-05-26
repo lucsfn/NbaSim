@@ -5,9 +5,9 @@ class Program
     public static void Main(string[] args)
     {
         // Função para obter o nome do jogador
-
         string playerName = GetPlayerName();
 
+        // Vetor de Times
         string[] AllNbaTeams = new string[]
         {
             "Atlanta Hawks",
@@ -42,10 +42,13 @@ class Program
             "Washington Wizards"
         };
 
+        // Variáveis a serem utilizadas na função Draft
         int PickDraft = 0;
         string NbaTeamSelected = "";
 
-        Draft(ref PickDraft, ref NbaTeamSelected, AllNbaTeams, playerName);
+        // Função Draft
+        string DraftInfos = Draft(ref PickDraft, ref NbaTeamSelected, AllNbaTeams, playerName);
+        Console.WriteLine(DraftInfos);
 
     }
 
@@ -64,6 +67,6 @@ class Program
         PickDraft = random.Next(1,31);
         NbaTeamSelected = AllNbaTeams[random.Next(0,30)];
 
-        string Draft = $"O jogador {playerName}";
+        string Draft = $"O jogador {playerName} foi escolhido pelo {NbaTeamSelected} na {PickDraft}º escolha.";
     } 
 }
