@@ -1,0 +1,4 @@
+C:\Users\Isaias\Desktop\ATP\nbaSim\obj\Debug\net8.0\nbaSim.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Isaias\Desktop\ATP\nbaSim\obj\Debug\net8.0\nbaSim.AssemblyInfoInputs.cache
+C:\Users\Isaias\Desktop\ATP\nbaSim\obj\Debug\net8.0\nbaSim.AssemblyInfo.cs
+C:\Users\Isaias\Desktop\ATP\nbaSim\obj\Debug\net8.0\nbaSim.csproj.CoreCompileInputs.cache

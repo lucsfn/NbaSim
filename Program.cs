@@ -54,8 +54,12 @@ class Program
 
     public static string GetPlayerName() 
     {
-        Console.WriteLine("Qual nome do seu jogador?");
-        string PlayerName = Console.ReadLine();
+        do 
+        {
+            Console.WriteLine("Qual nome do seu jogador?");
+            string PlayerName = Console.ReadLine();
+        } while (GetPlayerName = "");
+        
 
         return PlayerName;
     }
@@ -68,5 +72,7 @@ class Program
         NbaTeamSelected = AllNbaTeams[random.Next(0,30)];
 
         string Draft = $"O jogador {playerName} foi escolhido pelo {NbaTeamSelected} na {PickDraft}º escolha.";
+
+        return Draft;
     } 
 }
