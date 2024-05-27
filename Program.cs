@@ -122,10 +122,10 @@ class Program
             rookieRPG = 0,
             rookieAPG = 0;
 
-        bool roy = false;
+        bool winRoy = false;
 
         // Função que simula o roy
-        RookieYear(ref teamRookieForce, ref rookieGamesPlayed, ref rookiePPG, ref rookieRPG, ref rookieAPG, ref roy);
+        RookieYear(ref teamRookieForce, ref rookieGamesPlayed, ref rookiePPG, ref rookieRPG, ref rookieAPG, ref winRoy);
 
         // Imprimindo resultado da Rookie Season
         Console.WriteLine($"O jogador {playerName} em seu Rookie Year jogou {rookieGamesPlayed} jogos e obteve as seguintes médias:");
@@ -134,7 +134,7 @@ class Program
         Console.WriteLine($"{rookieRPG} rebotes por jogo");
         Console.WriteLine($"{rookieAPG} assistências por jogo");
         Console.WriteLine(" ");
-        if (roy)
+        if (winRoy)
         {
             Console.WriteLine("Além de ganhar o roy!");
         }
@@ -147,12 +147,12 @@ class Program
         Console.WriteLine(" ");
 
         // Imprimindo a seed e a condição de pós-temporada
-        string roy = "";
+        string condRookie = " ";
         int rookieSeasonCondition = 0;
 
-        TeamSeed(nbaTeamSelected, teamRookieForce, ref roy, ref rookieSeasonCondition, ref TeamConference);
+        TeamSeed(nbaTeamSelected, teamRookieForce, ref condRookie, ref rookieSeasonCondition, ref TeamConference);
 
-        Console.WriteLine(roy);
+        Console.WriteLine(condRookie);
         Console.WriteLine(" ");
         Console.WriteLine("==============================================================================");
         Console.WriteLine(" ");
@@ -292,7 +292,7 @@ class Program
 
     }
 
-    public static void RookieYear(ref int teamRookieForce, ref int rookieGamesPlayed, ref int rookiePPG, ref int rookieRPG, ref int rookieAPG, ref bool roy)
+    public static void RookieYear(ref int teamRookieForce, ref int rookieGamesPlayed, ref int rookiePPG, ref int rookieRPG, ref int rookieAPG, ref bool winRoy)
     {
         Random random = new Random();
 
@@ -370,11 +370,11 @@ class Program
 
         if (ProbWinroy >= 50)
         {
-            roy = true;
+            winRoy = true;
         }
     }
 
-    public static void TeamSeed(string nbaTeamSelected, int teamRookieForce, ref string roy, ref int rookieSeasonCondition, ref string TeamConference)
+    public static void TeamSeed(string nbaTeamSelected, int teamRookieForce, ref string condRookie, ref int rookieSeasonCondition, ref string TeamConference)
     {
         Random random = new Random();
 
@@ -404,25 +404,25 @@ class Program
         {
             teamPosition = random.Next(1, 4);
             rookieSeasonCondition = 1;
-            roy = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L e classificou para os playoffs em {teamPosition}º no {TeamConference}!";
+            condRookie = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L e classificou para os playoffs em {teamPosition}º no {TeamConference}!";
         }
         else if (wins <= 55 && wins >= 48)
         {
             teamPosition = random.Next(4, 7);
             rookieSeasonCondition = 1;
-            roy = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L e classificou para os playoffs em {teamPosition}º no {TeamConference}!";
+            condRookie = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L e classificou para os playoffs em {teamPosition}º no {TeamConference}!";
         }
         else if (wins <= 47 && wins >= 41)
         {
             teamPosition = random.Next(7, 11);
             rookieSeasonCondition = 2;
-            roy = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L e classificou para o play-in em {teamPosition}º no {TeamConference}!";
+            condRookie = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L e classificou para o play-in em {teamPosition}º no {TeamConference}!";
         }
         else if (wins <= 41)
         {
             teamPosition = random.Next(11, 16);
             rookieSeasonCondition = 3;
-            roy = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L no {TeamConference}, ficando em {teamPosition}º e não classificando para a pós-temporada.";
+            condRookie = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L no {TeamConference}, ficando em {teamPosition}º e não classificando para a pós-temporada.";
         }
     }
 
@@ -786,9 +786,8 @@ class Program
                 Console.WriteLine("==============================================================================");
                 Console.WriteLine(" ");
 
-                do
-                {
-                    secondRoundTeam = westernNbaTeams.random.Next(0, 15)];
+                do {
+                    secondRoundTeam = westernNbaTeams[random.Next(0, 15)];
                 } while (secondRoundTeam == firstRoundTeam || secondRoundTeam == nbaTeamSelected || secondRoundTeam == playInTeam);
 
                 wins = random.Next(1, 5);
@@ -862,7 +861,7 @@ class Program
     }
         }
 
-        if (FVMPWin = true)
+        if (FVMPWin == true)
         {
             nbaFVMP++;
         }
