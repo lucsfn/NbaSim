@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "9IE0qV9W/Ec=",
+  "dgSpecHash": "D1MDCOu0SUU=",
   "success": true,
   "projectFilePath": "C:\\Users\\Isaias\\Desktop\\ATP\\nbaSim\\nbaSim.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Isaias\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\8.0.5\\microsoft.netcore.app.runtime.win-x64.8.0.5.nupkg.sha512",
+    "C:\\Users\\Isaias\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\8.0.5\\microsoft.windowsdesktop.app.runtime.win-x64.8.0.5.nupkg.sha512",
+    "C:\\Users\\Isaias\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\8.0.5\\microsoft.aspnetcore.app.runtime.win-x64.8.0.5.nupkg.sha512"
+  ],
   "logs": []
 }
