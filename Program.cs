@@ -148,14 +148,6 @@ class Program
         Console.WriteLine("==============================================================================");
         Console.WriteLine(" ");
 
-        // Cálculo OVR Rookie
-        int ovrPlayer = OvrRookie(totalMediaStats);
-
-        Console.WriteLine($"{playerName} teve um overral de {ovrPlayer} ao final da temporada regular!");
-        Console.WriteLine(" ");
-        Console.WriteLine("==============================================================================");
-        Console.WriteLine(" ");
-
         // Imprimindo a seed e a condição de pós-temporada
         string condRookie = string.Empty;
         int seasonCondition = 0;
@@ -176,6 +168,14 @@ class Program
         RegularSeasonTotalStats(ref regularSeasonGamesPlayed, ref regularSeasonPPG, ref regularSeasonRPG, ref regularSeasonAPG, ref totalP, ref totalR, ref totalA, ref totalMediaStats);
 
         int totalG = regularSeasonGamesPlayed;
+
+        // Cálculo OVR Rookie
+        int ovrPlayer = OvrRookie(totalMediaStats);
+
+        Console.WriteLine($"{playerName} teve um overral de {ovrPlayer} ao final da temporada regular!");
+        Console.WriteLine(" ");
+        Console.WriteLine("==============================================================================");
+        Console.WriteLine(" ");
 
         // Simulação dos Playoffs
         int pTotalP = 0,
