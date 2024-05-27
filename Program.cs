@@ -102,6 +102,8 @@ class Program
         // Função Draft
         string DraftInfos = Draft(ref PickDraft, ref playerPosition, ref NbaTeamSelected, AllNbaTeams, playerName);
 
+        string TeamConference = Conference(NbaTeamSelected, EasternNbaTeams, WesternNbaTeams);
+
         Console.WriteLine(DraftInfos);
 
         Console.WriteLine(" ");
@@ -134,7 +136,7 @@ class Program
         Console.WriteLine(" ");
         if (ROY)
         {
-            Console.WriteLine("Além de ganahr o ROY!");
+            Console.WriteLine("Além de ganhar o ROY!");
         }
         else
         {
@@ -148,13 +150,23 @@ class Program
         string RookieSeed = "";
         int RookieSeasonCondition = 0;
 
-        TeamSeed(NbaTeamSelected, TeamRookieForce, ref RookieSeed, ref RookieSeasonCondition);
+        TeamSeed(NbaTeamSelected, TeamRookieForce, ref RookieSeed, ref RookieSeasonCondition, ref TeamConference);
 
         Console.WriteLine(RookieSeed);
         Console.WriteLine(" ");
         Console.WriteLine("==============================================================================");
         Console.WriteLine(" ");
-        
+
+        // Calculando total stats na Regular Season
+        int totalP = 0,
+            totalR = 0,
+            totalA = 0,
+            totalMediaStats = 0;
+
+        RookieTotalStats(ref rookieGamesPlayed, ref rookiePPG, ref rookieRPG, ref rookieAPG, ref ROY, ref totalP, ref totalR, ref totalA, ref totalMediaStats);
+
+        // Cálculo OVR Rookie
+
     }
 
     public static string GetPlayerName()
@@ -221,6 +233,7 @@ class Program
 
         return Conference;
     }
+
     public static int ForceRookieTeam(string NbaTeamSelected)
     {
         int pos = 0;
@@ -270,7 +283,7 @@ class Program
         // Obtendo o número de jogos
         if (TeamRookieForce == 1)
         {
-            rookieGamesPlayed = random.Next(30, 61);
+            rookieGamesPlayed = random.Next(45, 61);
         }
         else if (TeamRookieForce == 2)
         {
@@ -288,11 +301,11 @@ class Program
         }
         else if (TeamRookieForce == 2)
         {
-            rookiePPG = random.Next(10, 16);
+            rookiePPG = random.Next(10, 18);
         }
         else
         {
-            rookiePPG = random.Next(13, 23);
+            rookiePPG = random.Next(13, 24);
         }
 
         // Obtendo o número de rebotes por jogo   
@@ -328,7 +341,7 @@ class Program
         // Calculando probabilidade de ganhar o ROY
         if (TeamRookieForce == 1)
         {
-            ProbWinRoy = random.Next(15, 60);
+            ProbWinRoy = random.Next(15, 55);
         }
         else if (TeamRookieForce == 2)
         {
@@ -345,7 +358,7 @@ class Program
         }
     }
 
-    public static void TeamSeed(string NbaTeamSelected, int TeamRookieForce, ref string RookieSeed, ref int RookieSeasonCondition)
+    public static void TeamSeed(string NbaTeamSelected, int TeamRookieForce, ref string RookieSeed, ref int RookieSeasonCondition, ref string TeamConference)
     {
         Random random = new Random();
 
@@ -370,24 +383,41 @@ class Program
 
         loses = 82 - wins;
 
-        if (wins >= 48)
+        
+        if (wins >= 56) 
         {
-            teamPosition = random.Next(1, 7);
+            teamPosition = random.Next(1, 4);
             RookieSeasonCondition = 1;
-            RookieSeed = $"O {NbaTeamSelected} obteve uma seed de {wins} W - {loses} L e classificou para os playoffs em {teamPosition}º!";
+            RookieSeed = $"O {NbaTeamSelected} obteve uma seed de {wins} W - {loses} L e classificou para os playoffs em {teamPosition}º no {TeamConference}!";
+        }
+        else if (wins <= 55 && wins >= 48)
+        {
+            teamPosition = random.Next(4, 7);
+            RookieSeasonCondition = 1;
+            RookieSeed = $"O {NbaTeamSelected} obteve uma seed de {wins} W - {loses} L e classificou para os playoffs em {teamPosition}º no {TeamConference}!";
         }
         else if (wins <= 47 && wins >= 41)
         {
             teamPosition = random.Next(7, 11);
             RookieSeasonCondition = 2;
-            RookieSeed = $"O {NbaTeamSelected} obteve uma seed de {wins} W - {loses} L e classificou para o play-in em {teamPosition}º!";
+            RookieSeed = $"O {NbaTeamSelected} obteve uma seed de {wins} W - {loses} L e classificou para o play-in em {teamPosition}º no {TeamConference}!";
         }
         else if (wins <= 41)
         {
             teamPosition = random.Next(11, 16);
             RookieSeasonCondition = 3;
-            RookieSeed = $"O {NbaTeamSelected} obteve uma seed de {wins} W - {loses} L, ficando em {teamPosition}º e não classificando para a pós-temporada";
+            RookieSeed = $"O {NbaTeamSelected} obteve uma seed de {wins} W - {loses} L no {TeamConference}, ficando em {teamPosition}º e não classificando para a pós-temporada";
         }
+    }
+
+    public static int RookieTotalStats (ref int rookieGamesPlayed, ref int rookiePPG, ref int rookieRPG, ref int rookieAPG, ref int ROY, ref int totalP, ref int totalR, ref int totalA, ref int totalMediaStats)
+    {
+        totalMediaStats = rookiePPG + rookieRPG + rookieAPG;
+
+        totalP = rookiePPG * rookieGamesPlayed;
+        totalR = rookieRPG * rookieGamesPlayed;
+        totalA = rookieAPG * rookieGamesPlayed;
+
     }
 
 
