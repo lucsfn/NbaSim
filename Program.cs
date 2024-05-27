@@ -22,6 +22,8 @@ class Program
         Console.WriteLine("==============================================================================");
         Console.WriteLine(" ");
 
+        int playerAge = 18;
+
         // Array dos times da Nba
         string[] allNbaTeams = new string[]
         {
@@ -117,22 +119,22 @@ class Program
         int teamRookieForce = ForceRookieTeam(nbaTeamSelected);
 
         // Variáveis que serão utilizadas para saber o Rookie Year
-        int rookieGamesPlayed = 0,
-            rookiePPG = 0,
-            rookieRPG = 0,
-            rookieAPG = 0;
+        int regularSeasonGamesPlayed = 0,
+            regularSeasonPPG = 0,
+            regularSeasonRPG = 0,
+            regularSeasonAPG = 0;
 
         bool winRoy = false;
 
         // Função que simula o roy
-        RookieYear(ref teamRookieForce, ref rookieGamesPlayed, ref rookiePPG, ref rookieRPG, ref rookieAPG, ref winRoy);
+        RookieYear(ref teamRookieForce, ref regularSeasonGamesPlayed, ref regularSeasonPPG, ref regularSeasonRPG, ref regularSeasonAPG, ref winRoy);
 
         // Imprimindo resultado da Rookie Season
-        Console.WriteLine($"O jogador {playerName} em seu Rookie Year jogou {rookieGamesPlayed} jogos e obteve as seguintes médias:");
+        Console.WriteLine($"O jogador {playerName} em seu Rookie Year jogou {regularSeasonGamesPlayed} jogos e obteve as seguintes médias:");
         Console.WriteLine(" ");
-        Console.WriteLine($"{rookiePPG} pontos por jogo");
-        Console.WriteLine($"{rookieRPG} rebotes por jogo");
-        Console.WriteLine($"{rookieAPG} assistências por jogo");
+        Console.WriteLine($"{regularSeasonPPG} pontos por jogo");
+        Console.WriteLine($"{regularSeasonRPG} rebotes por jogo");
+        Console.WriteLine($"{regularSeasonAPG} assistências por jogo");
         Console.WriteLine(" ");
         if (winRoy)
         {
@@ -148,9 +150,9 @@ class Program
 
         // Imprimindo a seed e a condição de pós-temporada
         string condRookie = " ";
-        int rookieSeasonCondition = 0;
+        int seasonCondition = 0;
 
-        TeamSeed(nbaTeamSelected, teamRookieForce, ref condRookie, ref rookieSeasonCondition, ref TeamConference);
+        TeamSeedRookie(nbaTeamSelected, teamRookieForce, ref condRookie, ref seasonCondition, ref TeamConference);
 
         Console.WriteLine(condRookie);
         Console.WriteLine(" ");
@@ -163,9 +165,9 @@ class Program
             totalA = 0,
             totalMediaStats = 0;
 
-        RookieTotalStats(ref rookieGamesPlayed, ref rookiePPG, ref rookieRPG, ref rookieAPG, ref totalP, ref totalR, ref totalA, ref totalMediaStats);
+        RegularSeasonTotalStats(ref regularSeasonGamesPlayed, ref regularSeasonPPG, ref regularSeasonRPG, ref regularSeasonAPG, ref totalP, ref totalR, ref totalA, ref totalMediaStats);
 
-        int totalG = rookieGamesPlayed;
+        int totalG = regularSeasonGamesPlayed;
 
         // Cálculo OVR Rookie
         int ovrPlayer = OvrRookie(totalMediaStats);
@@ -179,19 +181,61 @@ class Program
         int pTotalP = 0,
             pTotalR = 0,
             pTotalA = 0,
-            nbaChamp = 0, 
+            nbaChamp = 0,
             nbaFVMP = 0;
 
-        PlayoffsSim(rookieSeasonCondition, easternNbaTeams, westernNbaTeams, teamConference,nbaTeamSelected, ref pTotalP, ref pTotalR, ref pTotalA, ref nbaChamp, ref nbaFVMP);
+        PlayoffsSim(seasonCondition, easternNbaTeams, westernNbaTeams, teamConference, nbaTeamSelected, ref pTotalP, ref pTotalR, ref pTotalA, ref nbaChamp, ref nbaFVMP);
 
         // Stats nos Playoffs
         int offsP = 0,
             offsR = 0,
             offsA = 0;
         string condOffs = "";
-        
-        PlayoffsPerfomance(ref offsP, ref offsR, ref offsA, ref ovrPlayer, ref condOffs, playerName);     
+        playerAge ++;
 
+        PlayoffsPerfomance(ref offsP, ref offsR, ref offsA, ref ovrPlayer, ref condOffs, playerName, seasonCondition);
+
+        // Próximas temporadas
+        int teamForce = teamRookieForce;
+        string playerTeam = nbaTeamSelected;
+        string condRegularSeason = " ";
+        int seasonCount = 2;
+        int mvp;
+
+        TeamSeed(playerTeam, teamForce, ref condRegularSeason, ref seasonCondition, ref TeamConference);
+
+        RegularSeasonStats(ref ovrPlayer, ref regularSeasonGamesPlayed , ref regularSeasonPPG, ref regularSeasonRPG, ref regularSeasonAPG, ref regularSeasonGamesPlayed, totalMediaStats);
+        RegularSeasonTotalStats(ref regularSeasonGamesPlayed, ref regularSeasonPPG, ref regularSeasonRPG, ref regularSeasonAPG, ref totalP, ref totalR, ref totalA, ref totalMediaStats);
+        bool winMVP = MVP (int ovrPlayer, int totalMediaStats);
+
+        Console.WriteLine($"O jogador {playerName} jogou {regularSeasonGamesPlayed} jogos na sua {seasonCount}º temporada e obteve as seguintes médias:");
+        Console.WriteLine(" ");
+        Console.WriteLine($"{regularSeasonPPG} pontos por jogo");
+        Console.WriteLine($"{regularSeasonRPG} rebotes por jogo");
+        Console.WriteLine($"{regularSeasonAPG} assistências por jogo");
+        Console.WriteLine(" ");
+        Console.WriteLine($"{playerName} teve um overral de {ovrPlayer} ao final da temporada regular!");
+        Console.WriteLine(" ");
+        Console.WriteLine("==============================================================================");
+        Console.WriteLine(" ");
+        if (winMVP == true)
+        {
+            mvp++;
+            Console.WriteLine($"{playerName} foi eleito o MVP da Temporada Regular, parabéns!");
+            Console.WriteLine(" ");
+            Console.WriteLine("==============================================================================");
+            Console.WriteLine(" ");
+        }
+        PlayoffsSim(seasonCondition, easternNbaTeams, westernNbaTeams, teamConference, nbaTeamSelected, ref pTotalP, ref pTotalR, ref pTotalA, ref nbaChamp, ref nbaFVMP);
+        PlayoffsPerfomance(ref offsP, ref offsR, ref offsA, ref ovrPlayer, ref condOffs, playerName, seasonCondition);
+
+        seasonCount ++;
+        playerAge ++;
+
+        if (seasonCount == 5 || seasonCount == 8 || seasonCount == 11 || seasonCount == 13 || seasonCount == 15)
+        {
+            
+        }
     }
 
     public static string GetPlayerName()
@@ -301,64 +345,64 @@ class Program
 
     }
 
-    public static void RookieYear(ref int teamRookieForce, ref int rookieGamesPlayed, ref int rookiePPG, ref int rookieRPG, ref int rookieAPG, ref bool winRoy)
+    public static void RookieYear(ref int teamRookieForce, ref int regularSeasonGamesPlayed, ref int regularSeasonPPG, ref int regularSeasonRPG, ref int regularSeasonAPG, ref bool winRoy)
     {
         Random random = new Random();
 
         // Obtendo o número de jogos
         if (teamRookieForce == 1)
         {
-            rookieGamesPlayed = random.Next(45, 61);
+            regularSeasonGamesPlayed = random.Next(45, 61);
         }
         else if (teamRookieForce == 2)
         {
-            rookieGamesPlayed = random.Next(55, 76);
+            regularSeasonGamesPlayed = random.Next(55, 76);
         }
         else
         {
-            rookieGamesPlayed = random.Next(60, 80);
+            regularSeasonGamesPlayed = random.Next(60, 80);
         }
 
         // Obtendo o número de pontos por jogo   
         if (teamRookieForce == 1)
         {
-            rookiePPG = random.Next(5, 13);
+            regularSeasonPPG = random.Next(5, 16);
         }
         else if (teamRookieForce == 2)
         {
-            rookiePPG = random.Next(10, 18);
+            regularSeasonPPG = random.Next(10, 20);
         }
         else
         {
-            rookiePPG = random.Next(13, 24);
+            regularSeasonPPG = random.Next(13, 24);
         }
 
         // Obtendo o número de rebotes por jogo   
         if (teamRookieForce == 1)
         {
-            rookieRPG = random.Next(2, 4);
+            regularSeasonRPG = random.Next(2, 4);
         }
         else if (teamRookieForce == 2)
         {
-            rookieRPG = random.Next(3, 6);
+            regularSeasonRPG = random.Next(3, 6);
         }
         else if (teamRookieForce == 3)
         {
-            rookieRPG = random.Next(4, 7);
+            regularSeasonRPG = random.Next(4, 7);
         }
 
         // Obtendo o número de assistências por jogo
         if (teamRookieForce == 1)
         {
-            rookieAPG = random.Next(2, 4);
+            regularSeasonAPG = random.Next(2, 4);
         }
         else if (teamRookieForce == 2)
         {
-            rookieAPG = random.Next(3, 6);
+            regularSeasonAPG = random.Next(3, 6);
         }
         else if (teamRookieForce == 3)
         {
-            rookieAPG = random.Next(4, 7);
+            regularSeasonAPG = random.Next(4, 7);
         }
 
         int ProbWinroy = 0;
@@ -383,7 +427,7 @@ class Program
         }
     }
 
-    public static void TeamSeed(string nbaTeamSelected, int teamRookieForce, ref string condRookie, ref int rookieSeasonCondition, ref string TeamConference)
+    public static void TeamSeedRookie(string nbaTeamSelected, int teamRookieForce, ref string condRookie, ref int seasonCondition, ref string TeamConference)
     {
         Random random = new Random();
 
@@ -391,7 +435,7 @@ class Program
             loses = 0,
             teamPosition = 0;
 
-        rookieSeasonCondition = 0;
+        seasonCondition = 0;
 
         if (teamRookieForce == 1)
         {
@@ -412,36 +456,36 @@ class Program
         if (wins >= 56)
         {
             teamPosition = random.Next(1, 4);
-            rookieSeasonCondition = 1;
+            seasonCondition = 1;
             condRookie = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L e classificou para os playoffs em {teamPosition}º no {TeamConference}!";
         }
         else if (wins <= 55 && wins >= 48)
         {
             teamPosition = random.Next(4, 7);
-            rookieSeasonCondition = 1;
+            seasonCondition = 1;
             condRookie = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L e classificou para os playoffs em {teamPosition}º no {TeamConference}!";
         }
         else if (wins <= 47 && wins >= 41)
         {
             teamPosition = random.Next(7, 11);
-            rookieSeasonCondition = 2;
+            seasonCondition = 2;
             condRookie = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L e classificou para o play-in em {teamPosition}º no {TeamConference}!";
         }
         else if (wins <= 41)
         {
             teamPosition = random.Next(11, 16);
-            rookieSeasonCondition = 3;
+            seasonCondition = 3;
             condRookie = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L no {TeamConference}, ficando em {teamPosition}º e não classificando para a pós-temporada.";
         }
     }
 
-    public static void RookieTotalStats(ref int rookieGamesPlayed, ref int rookiePPG, ref int rookieRPG, ref int rookieAPG, ref int totalP, ref int totalR, ref int totalA, ref int totalMediaStats)
+    public static void RegularSeasonTotalStats(ref int regularSeasonGamesPlayed, ref int regularSeasonPPG, ref int regularSeasonRPG, ref int regularSeasonAPG, ref int totalP, ref int totalR, ref int totalA, ref int totalMediaStats)
     {
-        totalMediaStats = rookiePPG + rookieRPG + rookieAPG;
+        totalMediaStats = regularSeasonPPG + regularSeasonRPG + regularSeasonAPG;
 
-        totalP = rookiePPG * rookieGamesPlayed;
-        totalR = rookieRPG * rookieGamesPlayed;
-        totalA = rookieAPG * rookieGamesPlayed;
+        totalP += regularSeasonPPG * regularSeasonGamesPlayed;
+        totalR += regularSeasonRPG * regularSeasonGamesPlayed;
+        totalA += regularSeasonAPG * regularSeasonGamesPlayed;
 
     }
 
@@ -467,7 +511,135 @@ class Program
         return ovr;
     }
 
-    public static void PlayoffsSim(int rookieSeasonCondition, string[] easternNbaTeams, string[] westernNbaTeams, string teamConference, string nbaTeamSelected, ref int pTotalP, ref int pTotalR, ref int pTotalA, ref int nbaChamp, ref int nbaFVMP)
+    public static void TeamSeed(string playerTeam, int teamForce, ref string condRegularSeason, ref int seasonCondition, ref string TeamConference)
+    {
+        Random random = new Random();
+
+        int wins = 0,
+            loses = 0,
+            teamPosition = 0;
+
+        seasonCondition = 0;
+
+        if (teamForce == 1)
+        {
+            wins = random.Next(46, 66);
+        }
+        else if (teamForce == 2)
+        {
+            wins = random.Next(38, 52);
+        }
+        else if (teamForce == 3)
+        {
+            wins = random.Next(18, 42);
+        }
+
+        loses = 82 - wins;
+
+
+        if (wins >= 56)
+        {
+            teamPosition = random.Next(1, 4);
+            seasonCondition = 1;
+            condRegularSeason = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L e classificou para os playoffs em {teamPosition}º no {TeamConference}!";
+        }
+        else if (wins <= 55 && wins >= 48)
+        {
+            teamPosition = random.Next(4, 7);
+            seasonCondition = 1;
+            condRegularSeason = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L e classificou para os playoffs em {teamPosition}º no {TeamConference}!";
+        }
+        else if (wins <= 47 && wins >= 41)
+        {
+            teamPosition = random.Next(7, 11);
+            seasonCondition = 2;
+            condRegularSeason = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L e classificou para o play-in em {teamPosition}º no {TeamConference}!";
+        }
+        else if (wins <= 41)
+        {
+            teamPosition = random.Next(11, 16);
+            seasonCondition = 3;
+            condRegularSeason = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L no {TeamConference}, ficando em {teamPosition}º e não classificando para a pós-temporada.";
+        }    
+    }
+
+    public static void RegularSeasonStats(ref int ovrPlayer, ref int regularSeasonGamesPlayed , ref int regularSeasonPPG, ref int regularSeasonRPG, ref int regularSeasonAPG, ref int regularSeasonGamesPlayed, int totalMediaStats)
+    {
+        Random random = new Random();
+
+        regularSeasonGamesPlayed = random.Next(65, 83);
+    
+        int beforeStats = totalMediaStats; 
+    
+    if (ovrPlayer > 95)
+            {
+                regularSeasonPPG = random.Next(23, 39);
+                regularSeasonRPG = random.Next(5, 13);
+                regularSeasonAPG = random.Next(5, 13);
+            }
+            else if (ovrPlayer > 90)
+            {
+                regularSeasonPPG = random.Next(21, 33);
+                regularSeasonRPG = random.Next(5, 9);
+                regularSeasonAPG = random.Next(5, 9);
+            }
+            else if (ovrPlayer > 86)
+            {
+                regularSeasonPPG = random.Next(18, 28);
+                regularSeasonRPG = random.Next(4, 8);
+                regularSeasonAPG = random.Next(4, 9);
+            }
+            else if (ovrPlayer > 82)
+            {
+                regularSeasonPPG = random.Next(17, 25);
+                regularSeasonRPG = random.Next(3, 8);
+                regularSeasonAPG = random.Next(4, 9);
+            }
+            else if (ovrPlayer > 79)
+            {
+                regularSeasonPPG = random.Next(14, 19);
+                regularSeasonRPG = random.Next(2, 7);
+                regularSeasonAPG = random.Next(3, 8);
+            }
+            else if (ovrPlayer > 74)
+            {
+                regularSeasonPPG = random.Next(11, 17);
+                regularSeasonRPG = random.Next(2, 5);
+                regularSeasonAPG = random.Next(3, 6);
+            }
+            else
+            {
+                regularSeasonPPG = random.Next(9, 15);
+                regularSeasonRPG = random.Next(2, 5);
+                regularSeasonAPG = random.Next(3, 5);
+            }   
+        
+        totalMediaStats = regularSeasonPPG + regularSeasonRPG + regularSeasonAPG;
+    
+    if (totalMediaStats > beforeStats)
+    {
+        ovrPlayer += random.Next(0, 5);
+    } else 
+    {
+        ovrPlayer -= random.Next(0, 2);
+    }
+    
+    }
+
+    public statis bool MVP (int ovrPlayer, int totalMediaStats)
+    {
+        Random random = new Random();
+        bool mvpWin = false;
+        
+        if (ovrPlayer > 88 && totalMediaStats > 39)
+        {
+            mvpWin = random.Next(2) == 0;
+        }
+
+        return mvpWin; 
+    } 
+
+    public static void PlayoffsSim(int seasonCondition, string[] easternNbaTeams, string[] westernNbaTeams, string teamConference, string nbaTeamSelected, ref int pTotalP, ref int pTotalR, ref int pTotalA, ref int nbaChamp, ref int nbaFVMP)
     {
         Random random = new Random();
         string playInTeam = " ",
@@ -483,7 +655,7 @@ class Program
 
         if (teamConference == "Leste")
         {
-            if (rookieSeasonCondition == 1) // Playoffs direto
+            if (seasonCondition == 1) // Playoffs direto
             {
                 do
                 {
@@ -541,7 +713,7 @@ class Program
                                 Console.WriteLine(" ");
                                 Console.WriteLine("==============================================================================");
                                 Console.WriteLine(" ");
-                                nbaChamp ++;
+                                nbaChamp++;
                                 FVMPWin = random.Next(0, 2) == 0;
                             }
                             else
@@ -568,7 +740,7 @@ class Program
                     Console.WriteLine($"O {nbaTeamSelected} enfrentou o {firstRoundTeam} no primeiro round e perdeu por {loses} - {wins}.");
                 }
             }
-            else if (rookieSeasonCondition == 2) // Play - In
+            else if (seasonCondition == 2) // Play - In
             {
                 do
                 {
@@ -641,7 +813,7 @@ class Program
                                     Console.WriteLine(" ");
                                     Console.WriteLine("==============================================================================");
                                     Console.WriteLine(" ");
-                                    nbaChamp ++;
+                                    nbaChamp++;
                                     FVMPWin = random.Next(0, 2) == 0;
                                 }
                                 else
@@ -678,196 +850,197 @@ class Program
         }
         if (teamConference == "Oeste")
         {
-            if (rookieSeasonCondition == 1) // Playoffs direto
-    {
-        do
-        {
-            firstRoundTeam = westernNbaTeams[random.Next(0, 15)];
-        } while (firstRoundTeam == nbaTeamSelected);
-
-        wins = random.Next(1, 5);
-
-        if (wins == 4)
-        {
-            loses = random.Next(0, 4);
-            Console.WriteLine($"O {nbaTeamSelected} enfrentou o {firstRoundTeam} no primeiro round e ganhou por {wins} - {loses}!");
-            Console.WriteLine(" ");
-            Console.WriteLine("==============================================================================");
-            Console.WriteLine(" ");
-
-            do
+            if (seasonCondition == 1) // Playoffs direto
             {
-                secondRoundTeam = westernNbaTeams[random.Next(0, 15)];
-            } while (secondRoundTeam == firstRoundTeam || secondRoundTeam == nbaTeamSelected);
-
-            wins = random.Next(1, 5);
-
-            if (wins == 4)
-            {
-                loses = random.Next(0, 4);
-                Console.WriteLine($"O {nbaTeamSelected} enfrentou o {secondRoundTeam} no segundo round e ganhou por {wins} - {loses}!");
-                Console.WriteLine(" ");
-                Console.WriteLine("==============================================================================");
-                Console.WriteLine(" ");
-
                 do
                 {
-                    cfTeam = westernNbaTeams[random.Next(0, 15)];
-                } while (cfTeam == firstRoundTeam || cfTeam == secondRoundTeam || cfTeam == nbaTeamSelected);
+                    firstRoundTeam = westernNbaTeams[random.Next(0, 15)];
+                } while (firstRoundTeam == nbaTeamSelected);
 
                 wins = random.Next(1, 5);
 
                 if (wins == 4)
                 {
                     loses = random.Next(0, 4);
-                    Console.WriteLine($"O {nbaTeamSelected} enfrentou o {cfTeam} nas finais de conferência e ganhou por {wins} - {loses}!");
-                    Console.WriteLine(" ");
-                    Console.WriteLine("==============================================================================");
-                    Console.WriteLine(" ");
-
-                    finalTeam = easternNbaTeams[random.Next(0, 15)];
-
-                    wins = random.Next(1, 5);
-
-                    if (wins == 4)
-                    {
-                        loses = random.Next(0, 4);
-                        Console.WriteLine($"O {nbaTeamSelected} enfrentou o {finalTeam} nas finais da NBA e ganhou por {wins} - {loses}!");
-                        Console.WriteLine(" ");
-                        Console.WriteLine("==============================================================================");
-                        Console.WriteLine(" ");
-                        nbaChamp ++;
-                        FVMPWin = random.Next(0, 2) == 0;
-                    }
-                    else
-                    {
-                        loses = 4;
-                        Console.WriteLine($"O {nbaTeamSelected} enfrentou o {finalTeam} na final da NBA e perdeu por {loses} - {wins}.");
-                    }
-                }
-                else
-                {
-                    loses = 4;
-                    Console.WriteLine($"O {nbaTeamSelected} enfrentou o {cfTeam} nas finais de conferência e perdeu por {loses} - {wins}.");
-                }
-            }
-            else
-            {
-                loses = 4;
-                Console.WriteLine($"O {nbaTeamSelected} enfrentou o {secondRoundTeam} no segundo round e perdeu por {loses} - {wins}.");
-            }
-        }
-        else
-        {
-            loses = 4;
-            Console.WriteLine($"O {nbaTeamSelected} enfrentou o {firstRoundTeam} no primeiro round e perdeu por {loses} - {wins}.");
-        }
-    }
-            else if (rookieSeasonCondition == 2) // Play - In
-    {
-        do
-        {
-            playInTeam = westernNbaTeams[random.Next(0, 15)];
-        } while (playInTeam == nbaTeamSelected);
-
-        wins = random.Next(1, 5);
-
-        if (wins == 4)
-        {
-            loses = random.Next(0, 4);
-            Console.WriteLine($"O {nbaTeamSelected} enfrentou o {playInTeam} no play-in e ganhou por {wins} - {loses}!");
-            Console.WriteLine(" ");
-            Console.WriteLine("==============================================================================");
-            Console.WriteLine(" ");
-
-            do
-            {
-                firstRoundTeam = westernNbaTeams[random.Next(0, 15)];
-            } while (firstRoundTeam == nbaTeamSelected || firstRoundTeam == playInTeam);
-
-            wins = random.Next(1, 5);
-
-            if (wins == 4)
-            {
-                loses = random.Next(0, 4);
-                Console.WriteLine($"O {nbaTeamSelected} enfrentou o {firstRoundTeam} no primeiro round e ganhou por {wins} - {loses}!");
-                Console.WriteLine(" ");
-                Console.WriteLine("==============================================================================");
-                Console.WriteLine(" ");
-
-                do {
-                    secondRoundTeam = westernNbaTeams[random.Next(0, 15)];
-                } while (secondRoundTeam == firstRoundTeam || secondRoundTeam == nbaTeamSelected || secondRoundTeam == playInTeam);
-
-                wins = random.Next(1, 5);
-
-                if (wins == 4)
-                {
-                    loses = random.Next(0, 4);
-                    Console.WriteLine($"O {nbaTeamSelected} enfrentou o {secondRoundTeam} no segundo round e ganhou por {wins} - {loses}!");
+                    Console.WriteLine($"O {nbaTeamSelected} enfrentou o {firstRoundTeam} no primeiro round e ganhou por {wins} - {loses}!");
                     Console.WriteLine(" ");
                     Console.WriteLine("==============================================================================");
                     Console.WriteLine(" ");
 
                     do
                     {
-                        cfTeam = westernNbaTeams[random.Next(0, 15)];
-                    } while (cfTeam == firstRoundTeam || cfTeam == secondRoundTeam || cfTeam == nbaTeamSelected || cfTeam == playInTeam);
+                        secondRoundTeam = westernNbaTeams[random.Next(0, 15)];
+                    } while (secondRoundTeam == firstRoundTeam || secondRoundTeam == nbaTeamSelected);
 
                     wins = random.Next(1, 5);
 
                     if (wins == 4)
                     {
                         loses = random.Next(0, 4);
-                        Console.WriteLine($"O {nbaTeamSelected} enfrentou o {cfTeam} nas finais de conferência e ganhou por {wins} - {loses}!");
+                        Console.WriteLine($"O {nbaTeamSelected} enfrentou o {secondRoundTeam} no segundo round e ganhou por {wins} - {loses}!");
                         Console.WriteLine(" ");
                         Console.WriteLine("==============================================================================");
                         Console.WriteLine(" ");
 
-                        finalTeam = easternNbaTeams[random.Next(0, 15)];
+                        do
+                        {
+                            cfTeam = westernNbaTeams[random.Next(0, 15)];
+                        } while (cfTeam == firstRoundTeam || cfTeam == secondRoundTeam || cfTeam == nbaTeamSelected);
 
                         wins = random.Next(1, 5);
 
                         if (wins == 4)
                         {
                             loses = random.Next(0, 4);
-                            Console.WriteLine($"O {nbaTeamSelected} enfrentou o {finalTeam} nas finais da NBA e ganhou por {wins} - {loses}!");
+                            Console.WriteLine($"O {nbaTeamSelected} enfrentou o {cfTeam} nas finais de conferência e ganhou por {wins} - {loses}!");
                             Console.WriteLine(" ");
                             Console.WriteLine("==============================================================================");
                             Console.WriteLine(" ");
-                            nbaChamp ++;
-                            FVMPWin = random.Next(0, 2) == 0;
+
+                            finalTeam = easternNbaTeams[random.Next(0, 15)];
+
+                            wins = random.Next(1, 5);
+
+                            if (wins == 4)
+                            {
+                                loses = random.Next(0, 4);
+                                Console.WriteLine($"O {nbaTeamSelected} enfrentou o {finalTeam} nas finais da NBA e ganhou por {wins} - {loses}!");
+                                Console.WriteLine(" ");
+                                Console.WriteLine("==============================================================================");
+                                Console.WriteLine(" ");
+                                nbaChamp++;
+                                FVMPWin = random.Next(0, 2) == 0;
+                            }
+                            else
+                            {
+                                loses = 4;
+                                Console.WriteLine($"O {nbaTeamSelected} enfrentou o {finalTeam} na final da NBA e perdeu por {loses} - {wins}.");
+                            }
                         }
                         else
                         {
                             loses = 4;
-                            Console.WriteLine($"O {nbaTeamSelected} enfrentou o {finalTeam} na final da NBA e perdeu por {loses} - {wins}.");
+                            Console.WriteLine($"O {nbaTeamSelected} enfrentou o {cfTeam} nas finais de conferência e perdeu por {loses} - {wins}.");
                         }
                     }
                     else
                     {
                         loses = 4;
-                        Console.WriteLine($"O {nbaTeamSelected} enfrentou o {cfTeam} nas finais de conferência e perdeu por {loses} - {wins}.");
+                        Console.WriteLine($"O {nbaTeamSelected} enfrentou o {secondRoundTeam} no segundo round e perdeu por {loses} - {wins}.");
                     }
                 }
                 else
                 {
                     loses = 4;
-                    Console.WriteLine($"O {nbaTeamSelected} enfrentou o {secondRoundTeam} no segundo round e perdeu por {loses} - {wins}.");
+                    Console.WriteLine($"O {nbaTeamSelected} enfrentou o {firstRoundTeam} no primeiro round e perdeu por {loses} - {wins}.");
                 }
             }
-            else
+            else if (seasonCondition == 2) // Play - In
             {
-                loses = 4;
-                Console.WriteLine($"O {nbaTeamSelected} enfrentou o {firstRoundTeam} no primeiro round e perdeu por {loses} - {wins}.");
+                do
+                {
+                    playInTeam = westernNbaTeams[random.Next(0, 15)];
+                } while (playInTeam == nbaTeamSelected);
+
+                wins = random.Next(1, 5);
+
+                if (wins == 4)
+                {
+                    loses = random.Next(0, 4);
+                    Console.WriteLine($"O {nbaTeamSelected} enfrentou o {playInTeam} no play-in e ganhou por {wins} - {loses}!");
+                    Console.WriteLine(" ");
+                    Console.WriteLine("==============================================================================");
+                    Console.WriteLine(" ");
+
+                    do
+                    {
+                        firstRoundTeam = westernNbaTeams[random.Next(0, 15)];
+                    } while (firstRoundTeam == nbaTeamSelected || firstRoundTeam == playInTeam);
+
+                    wins = random.Next(1, 5);
+
+                    if (wins == 4)
+                    {
+                        loses = random.Next(0, 4);
+                        Console.WriteLine($"O {nbaTeamSelected} enfrentou o {firstRoundTeam} no primeiro round e ganhou por {wins} - {loses}!");
+                        Console.WriteLine(" ");
+                        Console.WriteLine("==============================================================================");
+                        Console.WriteLine(" ");
+
+                        do
+                        {
+                            secondRoundTeam = westernNbaTeams[random.Next(0, 15)];
+                        } while (secondRoundTeam == firstRoundTeam || secondRoundTeam == nbaTeamSelected || secondRoundTeam == playInTeam);
+
+                        wins = random.Next(1, 5);
+
+                        if (wins == 4)
+                        {
+                            loses = random.Next(0, 4);
+                            Console.WriteLine($"O {nbaTeamSelected} enfrentou o {secondRoundTeam} no segundo round e ganhou por {wins} - {loses}!");
+                            Console.WriteLine(" ");
+                            Console.WriteLine("==============================================================================");
+                            Console.WriteLine(" ");
+
+                            do
+                            {
+                                cfTeam = westernNbaTeams[random.Next(0, 15)];
+                            } while (cfTeam == firstRoundTeam || cfTeam == secondRoundTeam || cfTeam == nbaTeamSelected || cfTeam == playInTeam);
+
+                            wins = random.Next(1, 5);
+
+                            if (wins == 4)
+                            {
+                                loses = random.Next(0, 4);
+                                Console.WriteLine($"O {nbaTeamSelected} enfrentou o {cfTeam} nas finais de conferência e ganhou por {wins} - {loses}!");
+                                Console.WriteLine(" ");
+                                Console.WriteLine("==============================================================================");
+                                Console.WriteLine(" ");
+
+                                finalTeam = easternNbaTeams[random.Next(0, 15)];
+
+                                wins = random.Next(1, 5);
+
+                                if (wins == 4)
+                                {
+                                    loses = random.Next(0, 4);
+                                    Console.WriteLine($"O {nbaTeamSelected} enfrentou o {finalTeam} nas finais da NBA e ganhou por {wins} - {loses}!");
+                                    Console.WriteLine(" ");
+                                    Console.WriteLine("==============================================================================");
+                                    Console.WriteLine(" ");
+                                    nbaChamp++;
+                                    FVMPWin = random.Next(0, 2) == 0;
+                                }
+                                else
+                                {
+                                    loses = 4;
+                                    Console.WriteLine($"O {nbaTeamSelected} enfrentou o {finalTeam} na final da NBA e perdeu por {loses} - {wins}.");
+                                }
+                            }
+                            else
+                            {
+                                loses = 4;
+                                Console.WriteLine($"O {nbaTeamSelected} enfrentou o {cfTeam} nas finais de conferência e perdeu por {loses} - {wins}.");
+                            }
+                        }
+                        else
+                        {
+                            loses = 4;
+                            Console.WriteLine($"O {nbaTeamSelected} enfrentou o {secondRoundTeam} no segundo round e perdeu por {loses} - {wins}.");
+                        }
+                    }
+                    else
+                    {
+                        loses = 4;
+                        Console.WriteLine($"O {nbaTeamSelected} enfrentou o {firstRoundTeam} no primeiro round e perdeu por {loses} - {wins}.");
+                    }
+                }
+                else
+                {
+                    loses = 4;
+                    Console.WriteLine($"O {nbaTeamSelected} enfrentou o {playInTeam} no play-in e perdeu por {loses} - {wins}.");
+                }
             }
-        }
-        else
-        {
-            loses = 4;
-            Console.WriteLine($"O {nbaTeamSelected} enfrentou o {playInTeam} no play-in e perdeu por {loses} - {wins}.");
-        }
-    }
         }
 
         if (FVMPWin == true)
@@ -877,57 +1050,67 @@ class Program
 
     }
 
-    public static void PlayoffsPerfomance(ref int offsP, ref int offsR, ref int offsA, ref int ovrPlayer, ref string condOffs, string playerName)
+    public static void PlayoffsPerfomance(ref int offsP, ref int offsR, ref int offsA, ref int ovrPlayer, ref string condOffs, string playerName, int seasonCondition)
     {
         Random random = new Random();
 
-        if (ovrPlayer > 95)
+        if (seasonCondition < 3)
         {
-            offsP = random.Next(23, 39);
-            offsR = random.Next(5, 13);
-            offsA = random.Next(5, 13);
-        } else if (ovrPlayer > 90)
-        {
-            offsP = random.Next(21, 33);
-            offsR = random.Next(5, 9);
-            offsA = random.Next(5, 9);
-        } else if (ovrPlayer > 86)
-        {
-            offsP = random.Next(18, 28);
-            offsR = random.Next(4, 8);
-            offsA = random.Next(4, 9);
-        } else if (ovrPlayer > 82)
-        {
-            offsP = random.Next(17, 25);
-            offsR = random.Next(3, 8);
-            offsA = random.Next(4, 9);
-        } else if (ovrPlayer > 79)
-        {
-            offsP = random.Next(14, 19);
-            offsR = random.Next(2, 7);
-            offsA = random.Next(3, 8);
-        } else if (ovrPlayer > 74)
-        {
-            offsP = random.Next(11, 17);
-            offsR = random.Next(2, 5);
-            offsA = random.Next(3, 6);
-        } else
-        {
-            offsP = random.Next(9, 15);
-            offsR = random.Next(2, 5);
-            offsA = random.Next(3, 5);
+            if (ovrPlayer > 95)
+            {
+                offsP = random.Next(23, 39);
+                offsR = random.Next(5, 13);
+                offsA = random.Next(5, 13);
+            }
+            else if (ovrPlayer > 90)
+            {
+                offsP = random.Next(21, 33);
+                offsR = random.Next(5, 9);
+                offsA = random.Next(5, 9);
+            }
+            else if (ovrPlayer > 86)
+            {
+                offsP = random.Next(18, 28);
+                offsR = random.Next(4, 8);
+                offsA = random.Next(4, 9);
+            }
+            else if (ovrPlayer > 82)
+            {
+                offsP = random.Next(17, 25);
+                offsR = random.Next(3, 8);
+                offsA = random.Next(4, 9);
+            }
+            else if (ovrPlayer > 79)
+            {
+                offsP = random.Next(14, 19);
+                offsR = random.Next(2, 7);
+                offsA = random.Next(3, 8);
+            }
+            else if (ovrPlayer > 74)
+            {
+                offsP = random.Next(11, 17);
+                offsR = random.Next(2, 5);
+                offsA = random.Next(3, 6);
+            }
+            else
+            {
+                offsP = random.Next(9, 15);
+                offsR = random.Next(2, 5);
+                offsA = random.Next(3, 5);
+            }
+
+            Console.WriteLine(" ");
+            Console.WriteLine("==============================================================================");
+            Console.WriteLine(" ");
+            Console.WriteLine($"O jogador {playerName} obteve as seguintes médias nos playoffs:");
+            Console.WriteLine(" ");
+            Console.WriteLine($"{offsP} pontos por jogo");
+            Console.WriteLine($"{offsR} rebotes por jogo");
+            Console.WriteLine($"{offsA} assistências por jogo");
+            Console.WriteLine(" ");
         }
 
-        Console.WriteLine(" ");
-        Console.WriteLine("==============================================================================");
-        Console.WriteLine(" ");
-        Console.WriteLine($"O jogador {playerName} obteve as seguintes médias nos playoffs:");
-        Console.WriteLine(" ");
-        Console.WriteLine($"{offsP} pontos por jogo");
-        Console.WriteLine($"{offsR} rebotes por jogo");
-        Console.WriteLine($"{offsA} assistências por jogo");
-        Console.WriteLine(" ");
-
     }
+
 
 }
