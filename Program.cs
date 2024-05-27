@@ -165,6 +165,8 @@ class Program
 
         RookieTotalStats(ref rookieGamesPlayed, ref rookiePPG, ref rookieRPG, ref rookieAPG, ref totalP, ref totalR, ref totalA, ref totalMediaStats);
 
+        int totalG = rookieGamesPlayed;
+
         // Cálculo OVR Rookie
         int ovrPlayer = OvrRookie(totalMediaStats);
 
@@ -174,7 +176,6 @@ class Program
         Console.WriteLine(" ");
 
         // Simulação dos Playoffs
-
         int pTotalP = 0,
             pTotalR = 0,
             pTotalA = 0,
@@ -182,6 +183,14 @@ class Program
             nbaFVMP = 0;
 
         PlayoffsSim(rookieSeasonCondition, easternNbaTeams, westernNbaTeams, teamConference,nbaTeamSelected, ref pTotalP, ref pTotalR, ref pTotalA, ref nbaChamp, ref nbaFVMP);
+
+        // Stats nos Playoffs
+        int offsP = 0,
+            offsR = 0,
+            offsA = 0;
+        string condOffs = "";
+        
+        PlayoffsPerfomance(ref offsP, ref offsR, ref offsA, ref ovrPlayer, ref condOffs, playerName);     
 
     }
 
@@ -867,4 +876,58 @@ class Program
         }
 
     }
+
+    public static void PlayoffsPerfomance(ref int offsP, ref int offsR, ref int offsA, ref int ovrPlayer, ref string condOffs, string playerName)
+    {
+        Random random = new Random();
+
+        if (ovrPlayer > 95)
+        {
+            offsP = random.Next(23, 39);
+            offsR = random.Next(5, 13);
+            offsA = random.Next(5, 13);
+        } else if (ovrPlayer > 90)
+        {
+            offsP = random.Next(21, 33);
+            offsR = random.Next(5, 9);
+            offsA = random.Next(5, 9);
+        } else if (ovrPlayer > 86)
+        {
+            offsP = random.Next(18, 28);
+            offsR = random.Next(4, 8);
+            offsA = random.Next(4, 9);
+        } else if (ovrPlayer > 82)
+        {
+            offsP = random.Next(17, 25);
+            offsR = random.Next(3, 8);
+            offsA = random.Next(4, 9);
+        } else if (ovrPlayer > 79)
+        {
+            offsP = random.Next(14, 19);
+            offsR = random.Next(2, 7);
+            offsA = random.Next(3, 8);
+        } else if (ovrPlayer > 74)
+        {
+            offsP = random.Next(11, 17);
+            offsR = random.Next(2, 5);
+            offsA = random.Next(3, 6);
+        } else
+        {
+            offsP = random.Next(9, 15);
+            offsR = random.Next(2, 5);
+            offsA = random.Next(3, 5);
+        }
+
+        Console.WriteLine(" ");
+        Console.WriteLine("==============================================================================");
+        Console.WriteLine(" ");
+        Console.WriteLine($"O jogador {playerName} obteve as seguintes médias nos playoffs:");
+        Console.WriteLine(" ");
+        Console.WriteLine($"{offsP} pontos por jogo");
+        Console.WriteLine($"{offsR} rebotes por jogo");
+        Console.WriteLine($"{offsA} assistências por jogo");
+        Console.WriteLine(" ");
+
+    }
+
 }
