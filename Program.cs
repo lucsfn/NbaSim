@@ -191,7 +191,7 @@ class Program
             offsR = 0,
             offsA = 0;
         string condOffs = "";
-        playerAge ++;
+        playerAge++;
 
         PlayoffsPerfomance(ref offsP, ref offsR, ref offsA, ref ovrPlayer, ref condOffs, playerName, seasonCondition);
 
@@ -204,9 +204,9 @@ class Program
 
         TeamSeed(playerTeam, teamForce, ref condRegularSeason, ref seasonCondition, ref TeamConference);
 
-        RegularSeasonStats(ref ovrPlayer, ref regularSeasonGamesPlayed , ref regularSeasonPPG, ref regularSeasonRPG, ref regularSeasonAPG, ref regularSeasonGamesPlayed, totalMediaStats);
+        RegularSeasonStats(ref ovrPlayer, ref regularSeasonGamesPlayed, ref regularSeasonPPG, ref regularSeasonRPG, ref regularSeasonAPG, ref regularSeasonGamesPlayed, totalMediaStats);
         RegularSeasonTotalStats(ref regularSeasonGamesPlayed, ref regularSeasonPPG, ref regularSeasonRPG, ref regularSeasonAPG, ref totalP, ref totalR, ref totalA, ref totalMediaStats);
-        bool winMVP = MVP (int ovrPlayer, int totalMediaStats);
+        bool winMVP = MVP(int ovrPlayer, int totalMediaStats);
 
         Console.WriteLine($"O jogador {playerName} jogou {regularSeasonGamesPlayed} jogos na sua {seasonCount}º temporada e obteve as seguintes médias:");
         Console.WriteLine(" ");
@@ -229,12 +229,12 @@ class Program
         PlayoffsSim(seasonCondition, easternNbaTeams, westernNbaTeams, teamConference, nbaTeamSelected, ref pTotalP, ref pTotalR, ref pTotalA, ref nbaChamp, ref nbaFVMP);
         PlayoffsPerfomance(ref offsP, ref offsR, ref offsA, ref ovrPlayer, ref condOffs, playerName, seasonCondition);
 
-        seasonCount ++;
-        playerAge ++;
+        seasonCount++;
+        playerAge++;
 
         if (seasonCount == 5 || seasonCount == 8 || seasonCount == 11 || seasonCount == 13 || seasonCount == 15)
         {
-            
+
         }
     }
 
@@ -560,84 +560,85 @@ class Program
             teamPosition = random.Next(11, 16);
             seasonCondition = 3;
             condRegularSeason = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L no {TeamConference}, ficando em {teamPosition}º e não classificando para a pós-temporada.";
-        }    
+        }
     }
 
-    public static void RegularSeasonStats(ref int ovrPlayer, ref int regularSeasonGamesPlayed , ref int regularSeasonPPG, ref int regularSeasonRPG, ref int regularSeasonAPG, ref int regularSeasonGamesPlayed, int totalMediaStats)
+    public static void RegularSeasonStats(ref int ovrPlayer, ref int regularSeasonGamesPlayed, ref int regularSeasonPPG, ref int regularSeasonRPG, ref int regularSeasonAPG, ref int regularSeasonGamesPlayed, int totalMediaStats)
     {
         Random random = new Random();
 
         regularSeasonGamesPlayed = random.Next(65, 83);
-    
-        int beforeStats = totalMediaStats; 
-    
-    if (ovrPlayer > 95)
-            {
-                regularSeasonPPG = random.Next(23, 39);
-                regularSeasonRPG = random.Next(5, 13);
-                regularSeasonAPG = random.Next(5, 13);
-            }
-            else if (ovrPlayer > 90)
-            {
-                regularSeasonPPG = random.Next(21, 33);
-                regularSeasonRPG = random.Next(5, 9);
-                regularSeasonAPG = random.Next(5, 9);
-            }
-            else if (ovrPlayer > 86)
-            {
-                regularSeasonPPG = random.Next(18, 28);
-                regularSeasonRPG = random.Next(4, 8);
-                regularSeasonAPG = random.Next(4, 9);
-            }
-            else if (ovrPlayer > 82)
-            {
-                regularSeasonPPG = random.Next(17, 25);
-                regularSeasonRPG = random.Next(3, 8);
-                regularSeasonAPG = random.Next(4, 9);
-            }
-            else if (ovrPlayer > 79)
-            {
-                regularSeasonPPG = random.Next(14, 19);
-                regularSeasonRPG = random.Next(2, 7);
-                regularSeasonAPG = random.Next(3, 8);
-            }
-            else if (ovrPlayer > 74)
-            {
-                regularSeasonPPG = random.Next(11, 17);
-                regularSeasonRPG = random.Next(2, 5);
-                regularSeasonAPG = random.Next(3, 6);
-            }
-            else
-            {
-                regularSeasonPPG = random.Next(9, 15);
-                regularSeasonRPG = random.Next(2, 5);
-                regularSeasonAPG = random.Next(3, 5);
-            }   
-        
+
+        int beforeStats = totalMediaStats;
+
+        if (ovrPlayer > 95)
+        {
+            regularSeasonPPG = random.Next(23, 39);
+            regularSeasonRPG = random.Next(5, 13);
+            regularSeasonAPG = random.Next(5, 13);
+        }
+        else if (ovrPlayer > 90)
+        {
+            regularSeasonPPG = random.Next(21, 33);
+            regularSeasonRPG = random.Next(5, 9);
+            regularSeasonAPG = random.Next(5, 9);
+        }
+        else if (ovrPlayer > 86)
+        {
+            regularSeasonPPG = random.Next(18, 28);
+            regularSeasonRPG = random.Next(4, 8);
+            regularSeasonAPG = random.Next(4, 9);
+        }
+        else if (ovrPlayer > 82)
+        {
+            regularSeasonPPG = random.Next(17, 25);
+            regularSeasonRPG = random.Next(3, 8);
+            regularSeasonAPG = random.Next(4, 9);
+        }
+        else if (ovrPlayer > 79)
+        {
+            regularSeasonPPG = random.Next(14, 19);
+            regularSeasonRPG = random.Next(2, 7);
+            regularSeasonAPG = random.Next(3, 8);
+        }
+        else if (ovrPlayer > 74)
+        {
+            regularSeasonPPG = random.Next(11, 17);
+            regularSeasonRPG = random.Next(2, 5);
+            regularSeasonAPG = random.Next(3, 6);
+        }
+        else
+        {
+            regularSeasonPPG = random.Next(9, 15);
+            regularSeasonRPG = random.Next(2, 5);
+            regularSeasonAPG = random.Next(3, 5);
+        }
+
         totalMediaStats = regularSeasonPPG + regularSeasonRPG + regularSeasonAPG;
-    
-    if (totalMediaStats > beforeStats)
-    {
-        ovrPlayer += random.Next(0, 5);
-    } else 
-    {
-        ovrPlayer -= random.Next(0, 2);
-    }
-    
+
+        if (totalMediaStats > beforeStats)
+        {
+            ovrPlayer += random.Next(0, 5);
+        }
+        else
+        {
+            ovrPlayer -= random.Next(0, 2);
+        }
+
     }
 
-    public statis bool MVP (int ovrPlayer, int totalMediaStats)
+    public statis bool MVP(int ovrPlayer, int totalMediaStats)
     {
         Random random = new Random();
         bool mvpWin = false;
-        
+
         if (ovrPlayer > 88 && totalMediaStats > 39)
         {
             mvpWin = random.Next(2) == 0;
         }
 
-        return mvpWin; 
-    } 
+        return mvpWin;
+    }
 
     public static void PlayoffsSim(int seasonCondition, string[] easternNbaTeams, string[] westernNbaTeams, string teamConference, string nbaTeamSelected, ref int pTotalP, ref int pTotalR, ref int pTotalA, ref int nbaChamp, ref int nbaFVMP)
     {
@@ -1112,5 +1113,96 @@ class Program
 
     }
 
+    public static void FreeAgency(ref string playerTeam, string[] allNbaTeams, string[] easternNbaTeams, string[] westernNbaTeams, ref string teamConference)
+    {
+        string resposta = " ";
+        Random random = new Random();
+        string team1 = " ",
+                team2 = " ",
+                team3 = " ";
+        int selected = 0;
+
+        do 
+        {
+            team1 = allNbaTeams[random.Next(0, 30)];
+        } while (team1 == playerTeam);
+
+        do
+        {
+            team2 = allNbaTeams[random.Next(0, 30)];
+        } while (team2 == team1);
+
+        do
+        {
+            team3 = allNbaTeams[random.Next(0, 30)];
+        } while (team3 == team1 || team3 == team2);
+
+        Console.WriteLine($"Seu contrato com o {playerTeam} acabou. Você recebeu uma proposta de extensão por 3 anos, deseja continuar?\nResponda com sim ou não");
+        Console.WriteLine(" ");
+
+        do
+        {
+            Console.WriteLine("Digite uma resposta válida.");
+            resposta = Console.ReadLine().ToUpper();
+            if (resposta == "nao" || resposta == "NAO")
+            {
+                resposta = "NÃO"
+            }
+        } while (resposta != "SIM" || resposta != "NÃO")
+
+        if (resposta == "SIM")
+        {
+            break;
+        }
+        else
+        {
+            Console.WriteLine(" ");
+            Console.WriteLine($"Você recebeu 3 propostas, todas contratos máximos por 3 anos:");
+            Console.WriteLine($"1- {team1}");
+            Console.WriteLine($"2- {team2}");
+            Console.WriteLine($"3- {team3}");
+            Console.WriteLine(" ");
+            Console.WriteLine("Qual das 3 você deseja aceitar?");
+            do
+            {
+                selected = int.Parse(Console.ReadLine());
+            } while (selected < 1 || selected > 3);
+        }
+
+        if (selected == 1)
+        {
+            playerTeam = team1;
+            if (easternNbaTeams.Contains(team1))
+            {
+            teamConference = "Leste"
+            } else
+            {
+            teamConference = "Oeste"
+            }
+        }
+        if (selected == 2)
+        {
+            playerTeam = team2;
+            if (easternNbaTeams.Contains(team1))
+            {
+            teamConference = "Leste"
+            } else
+            {
+            teamConference = "Oeste"
+            }
+        }
+        if (selected == 3)
+        {
+            playerTeam = team3;
+            if (easternNbaTeams.Contains(team1))
+            {
+            teamConference = "Leste"
+            } else
+            {
+            teamConference = "Oeste"
+            }
+        }   
+
+    }
 
 }
