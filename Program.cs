@@ -99,7 +99,7 @@ class Program
 
         // Variáveis a serem utilizadas na função Draft
         int pickDraft = 0;
-        string nbaTeamSelected = "";
+        string nbaTeamSelected = string.Empty;
 
         // Função Draft
         string DraftInfos = Draft(ref pickDraft, ref playerPosition, ref nbaTeamSelected, allNbaTeams, playerName);
@@ -149,7 +149,7 @@ class Program
         Console.WriteLine(" ");
 
         // Imprimindo a seed e a condição de pós-temporada
-        string condRookie = " ";
+        string condRookie = string.Empty;
         int seasonCondition = 0;
 
         TeamSeedRookie(nbaTeamSelected, teamRookieForce, ref condRookie, ref seasonCondition, ref TeamConference);
@@ -182,15 +182,15 @@ class Program
             pTotalR = 0,
             pTotalA = 0,
             nbaChamp = 0,
-            nbaFVMP = 0;
+            nbaFMVP = 0;
 
-        PlayoffsSim(seasonCondition, easternNbaTeams, westernNbaTeams, teamConference, nbaTeamSelected, ref pTotalP, ref pTotalR, ref pTotalA, ref nbaChamp, ref nbaFVMP);
+        PlayoffsSim(seasonCondition, easternNbaTeams, westernNbaTeams, teamConference, nbaTeamSelected, ref pTotalP, ref pTotalR, ref pTotalA, ref nbaChamp, ref nbaFMVP);
 
         // Stats nos Playoffs
         int offsP = 0,
             offsR = 0,
             offsA = 0;
-        string condOffs = "";
+        string condOffs = string.Empty;
         playerAge++;
 
         PlayoffsPerfomance(ref offsP, ref offsR, ref offsA, ref ovrPlayer, ref condOffs, playerName, seasonCondition);
@@ -198,60 +198,63 @@ class Program
         // Próximas temporadas
         int teamForce = teamRookieForce;
         string playerTeam = nbaTeamSelected;
-        string condRegularSeason = " ";
+        string condRegularSeason = string.Empty;
         int seasonCount = 2;
-        int mvp;
-        string continueSim = " ";
+        int mvp = 0;
+        string continueSim = string.Empty;
 
-        do {
-
-        TeamSeed(playerTeam, teamForce, ref condRegularSeason, ref seasonCondition, ref TeamConference);
-
-        RegularSeasonStats(ref ovrPlayer, ref regularSeasonGamesPlayed, ref regularSeasonPPG, ref regularSeasonRPG, ref regularSeasonAPG, ref regularSeasonGamesPlayed, totalMediaStats, playerAge);
-        RegularSeasonTotalStats(ref regularSeasonGamesPlayed, ref regularSeasonPPG, ref regularSeasonRPG, ref regularSeasonAPG, ref totalP, ref totalR, ref totalA, ref totalMediaStats);
-        bool winMVP = MVP(int ovrPlayer, int totalMediaStats);
-
-        Console.WriteLine($"O jogador {playerName} jogou {regularSeasonGamesPlayed} jogos na sua {seasonCount}º temporada e obteve as seguintes médias:");
-        Console.WriteLine(" ");
-        Console.WriteLine($"{regularSeasonPPG} pontos por jogo");
-        Console.WriteLine($"{regularSeasonRPG} rebotes por jogo");
-        Console.WriteLine($"{regularSeasonAPG} assistências por jogo");
-        Console.WriteLine(" ");
-        Console.WriteLine($"{playerName} teve um overral de {ovrPlayer} ao final da temporada regular!");
-        Console.WriteLine(" ");
-        Console.WriteLine("==============================================================================");
-        Console.WriteLine(" ");
-        if (winMVP == true)
+        do
         {
-            mvp++;
-            Console.WriteLine($"{playerName} foi eleito o MVP da Temporada Regular, parabéns!");
+
+            TeamSeed(playerTeam, teamForce, ref condRegularSeason, ref seasonCondition, ref TeamConference, nbaTeamSelected);
+
+            RegularSeasonStats(ref ovrPlayer, ref regularSeasonGamesPlayed, ref regularSeasonPPG, ref regularSeasonRPG, ref regularSeasonAPG, totalMediaStats, playerAge);
+            RegularSeasonTotalStats(ref regularSeasonGamesPlayed, ref regularSeasonPPG, ref regularSeasonRPG, ref regularSeasonAPG, ref totalP, ref totalR, ref totalA, ref totalMediaStats);
+            bool winMVP = MVP(ovrPlayer, totalMediaStats);
+
+            Console.WriteLine($"O jogador {playerName} jogou {regularSeasonGamesPlayed} jogos na sua {seasonCount}º temporada e obteve as seguintes médias:");
+            Console.WriteLine(" ");
+            Console.WriteLine($"{regularSeasonPPG} pontos por jogo");
+            Console.WriteLine($"{regularSeasonRPG} rebotes por jogo");
+            Console.WriteLine($"{regularSeasonAPG} assistências por jogo");
+            Console.WriteLine(" ");
+            Console.WriteLine($"{playerName} teve um overral de {ovrPlayer} ao final da temporada regular!");
             Console.WriteLine(" ");
             Console.WriteLine("==============================================================================");
             Console.WriteLine(" ");
-        }
-
-        PlayoffsSim(seasonCondition, easternNbaTeams, westernNbaTeams, teamConference, nbaTeamSelected, ref pTotalP, ref pTotalR, ref pTotalA, ref nbaChamp, ref nbaFVMP);
-        PlayoffsPerfomance(ref offsP, ref offsR, ref offsA, ref ovrPlayer, ref condOffs, playerName, seasonCondition);
-
-        seasonCount++;
-        playerAge++;
-
-        if (seasonCount == 5 || seasonCount == 8 || seasonCount == 11 || seasonCount == 13 || seasonCount == 15)
-        {
-            FreeAgency(ref playerTeam, allNbaTeams, easternNbaTeams, westernNbaTeams, ref teamConference);
-        }
-        do {
-            Console.WriteLine($"Deseja continuar a simulação? {playerName} está com {playerAge} anos, na sua {seasonCount} temporada na liga.")
-            
-            continueSim = Console.ReadLine().ToUpper();
-
-            if (continueSim == "nao" || continueSim == "NAO")
+            if (winMVP == true)
             {
-                continueSim = "NÃO";
+                mvp++;
+                Console.WriteLine($"{playerName} foi eleito o MVP da Temporada Regular, parabéns!");
+                Console.WriteLine(" ");
+                Console.WriteLine("==============================================================================");
+                Console.WriteLine(" ");
             }
-        } while (continueSim != "SIM" || continueSim != "NÃO");
 
-        } while (continueSim == "SIM")
+            PlayoffsSim(seasonCondition, easternNbaTeams, westernNbaTeams, teamConference, nbaTeamSelected, ref pTotalP, ref pTotalR, ref pTotalA, ref nbaChamp, ref nbaFMVP);
+            PlayoffsPerfomance(ref offsP, ref offsR, ref offsA, ref ovrPlayer, ref condOffs, playerName, seasonCondition);
+
+            seasonCount++;
+            playerAge++;
+
+            if (seasonCount == 5 || seasonCount == 8 || seasonCount == 11 || seasonCount == 13 || seasonCount == 15)
+            {
+                FreeAgency(ref playerTeam, allNbaTeams, easternNbaTeams, westernNbaTeams, ref teamConference);
+            }
+            do
+            {
+                Console.WriteLine($"Deseja continuar a simulação? {playerName} está com {playerAge} anos, na sua {seasonCount} temporada na liga.");
+
+                continueSim = Console.ReadLine()?.ToUpper() ?? string.Empty;
+
+                if (continueSim == "NAO")
+                {
+                    continueSim = "NÃO";
+                }
+            } while (continueSim != "SIM" && continueSim != "NÃO");
+
+
+        } while (continueSim == "SIM");
         Console.WriteLine(" ");
         Console.WriteLine("==============================================================================");
         Console.WriteLine(" ");
@@ -265,7 +268,7 @@ class Program
 
     public static string GetPlayerName()
     {
-        string PlayerName = "";
+        string PlayerName = string.Empty;
 #pragma warning disable CS8600
 
         do
@@ -273,7 +276,7 @@ class Program
             Console.WriteLine("Qual nome do seu jogador?");
             PlayerName = Console.ReadLine();
 
-            if (PlayerName == null) PlayerName = "";
+            if (PlayerName == null) PlayerName = string.Empty;
 #pragma warning restore CS8600
 
         } while (string.IsNullOrEmpty(PlayerName));
@@ -284,7 +287,7 @@ class Program
 
     public static string GetPlayerPosition()
     {
-        string PlayerPosition = "";
+        string PlayerPosition = string.Empty;
 #pragma warning disable CS8602
         // Array com as posições válidas
         string[] ValidPositions = { "PG", "SG", "SF", "PF", "C" };
@@ -314,7 +317,7 @@ class Program
 
     public static string Conference(string nbaTeamSelected, string[] easternNbaTeams, string[] westernNbaTeams)
     {
-        string Conference = "";
+        string Conference = string.Empty;
 
         if (Array.Exists(easternNbaTeams, position => position == nbaTeamSelected))
         {
@@ -536,7 +539,7 @@ class Program
         return ovr;
     }
 
-    public static void TeamSeed(string playerTeam, int teamForce, ref string condRegularSeason, ref int seasonCondition, ref string TeamConference)
+    public static void TeamSeed(string playerTeam, int teamForce, ref string condRegularSeason, ref int seasonCondition, ref string TeamConference, string nbaTeamSelected)
     {
         Random random = new Random();
 
@@ -588,7 +591,7 @@ class Program
         }
     }
 
-    public static void RegularSeasonStats(ref int ovrPlayer, ref int regularSeasonGamesPlayed, ref int regularSeasonPPG, ref int regularSeasonRPG, ref int regularSeasonAPG, ref int regularSeasonGamesPlayed, int totalMediaStats)
+    public static void RegularSeasonStats(ref int ovrPlayer, ref int regularSeasonGamesPlayed, ref int regularSeasonPPG, ref int regularSeasonRPG, ref int regularSeasonAPG, int totalMediaStats, int playerAge)
     {
         Random random = new Random();
 
@@ -657,7 +660,7 @@ class Program
 
     }
 
-    public statis bool MVP(int ovrPlayer, int totalMediaStats)
+    public static bool MVP(int ovrPlayer, int totalMediaStats)
     {
         Random random = new Random();
         bool mvpWin = false;
@@ -670,14 +673,14 @@ class Program
         return mvpWin;
     }
 
-    public static void PlayoffsSim(int seasonCondition, string[] easternNbaTeams, string[] westernNbaTeams, string teamConference, string nbaTeamSelected, ref int pTotalP, ref int pTotalR, ref int pTotalA, ref int nbaChamp, ref int nbaFVMP)
+    public static void PlayoffsSim(int seasonCondition, string[] easternNbaTeams, string[] westernNbaTeams, string teamConference, string nbaTeamSelected, ref int pTotalP, ref int pTotalR, ref int pTotalA, ref int nbaChamp, ref int nbaFMVP)
     {
         Random random = new Random();
-        string playInTeam = " ",
-                firstRoundTeam = " ",
-                secondRoundTeam = " ",
-                cfTeam = " ",
-                finalTeam = " ";
+        string playInTeam = string.Empty,
+                firstRoundTeam = string.Empty,
+                secondRoundTeam = string.Empty,
+                cfTeam = string.Empty,
+                finalTeam = string.Empty;
 
         int wins = 0,
             loses = 0;
@@ -1076,7 +1079,7 @@ class Program
 
         if (FVMPWin == true)
         {
-            nbaFVMP++;
+            nbaFMVP++;
         }
 
     }
@@ -1145,14 +1148,14 @@ class Program
 
     public static void FreeAgency(ref string playerTeam, string[] allNbaTeams, string[] easternNbaTeams, string[] westernNbaTeams, ref string teamConference)
     {
-        string resposta = " ";
+        string resposta = string.Empty;
         Random random = new Random();
-        string team1 = " ",
-                team2 = " ",
-                team3 = " ";
+        string team1 = string.Empty,
+                team2 = string.Empty,
+                team3 = string.Empty;
         int selected = 0;
 
-        do 
+        do
         {
             team1 = allNbaTeams[random.Next(0, 30)];
         } while (team1 == playerTeam);
@@ -1173,18 +1176,16 @@ class Program
         do
         {
             Console.WriteLine("Digite uma resposta válida.");
-            resposta = Console.ReadLine().ToUpper();
-            if (resposta == "nao" || resposta == "NAO")
-            {
-                resposta = "NÃO"
-            }
-        } while (resposta != "SIM" || resposta != "NÃO")
+            resposta = Console.ReadLine()?.ToUpper() ?? string.Empty;
 
-        if (resposta == "SIM")
-        {
-            break;
-        }
-        else
+            if (resposta == "NAO")
+            {
+                resposta = "NÃO";
+            }
+        } while (resposta != "SIM" && resposta != "NÃO");
+
+
+        if (resposta == "NÃO")
         {
             Console.WriteLine(" ");
             Console.WriteLine($"Você recebeu 3 propostas, todas contratos máximos por 3 anos:");
@@ -1204,10 +1205,11 @@ class Program
             playerTeam = team1;
             if (easternNbaTeams.Contains(team1))
             {
-            teamConference = "Leste"
-            } else
+                teamConference = "Leste";
+            }
+            else
             {
-            teamConference = "Oeste"
+                teamConference = "Oeste";
             }
         }
         if (selected == 2)
@@ -1215,10 +1217,11 @@ class Program
             playerTeam = team2;
             if (easternNbaTeams.Contains(team1))
             {
-            teamConference = "Leste"
-            } else
+                teamConference = "Leste";
+            }
+            else
             {
-            teamConference = "Oeste"
+                teamConference = "Oeste";
             }
         }
         if (selected == 3)
@@ -1226,15 +1229,16 @@ class Program
             playerTeam = team3;
             if (easternNbaTeams.Contains(team1))
             {
-            teamConference = "Leste"
-            } else
+                teamConference = "Leste";
+            }
+            else
             {
-            teamConference = "Oeste"
+                teamConference = "Oeste";
             }
         }
-            Console.WriteLine(" ");
-            Console.WriteLine("==============================================================================");
-            Console.WriteLine(" ");   
+        Console.WriteLine(" ");
+        Console.WriteLine("==============================================================================");
+        Console.WriteLine(" ");
 
     }
 
