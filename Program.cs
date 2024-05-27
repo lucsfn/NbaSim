@@ -1147,99 +1147,89 @@ class Program
     }
 
     public static void FreeAgency(ref string playerTeam, string[] allNbaTeams, string[] easternNbaTeams, string[] westernNbaTeams, ref string teamConference)
+{
+    if (allNbaTeams == null || easternNbaTeams == null || westernNbaTeams == null)
     {
-        string resposta = string.Empty;
-        Random random = new Random();
-        string team1 = string.Empty,
-                team2 = string.Empty,
-                team3 = string.Empty;
-        int selected = 0;
-
-        do
-        {
-            team1 = allNbaTeams[random.Next(0, 30)];
-        } while (team1 == playerTeam);
-
-        do
-        {
-            team2 = allNbaTeams[random.Next(0, 30)];
-        } while (team2 == team1);
-
-        do
-        {
-            team3 = allNbaTeams[random.Next(0, 30)];
-        } while (team3 == team1 || team3 == team2);
-
-        Console.WriteLine($"Seu contrato com o {playerTeam} acabou. Você recebeu uma proposta de extensão por 3 anos, deseja continuar?\nResponda com sim ou não");
-        Console.WriteLine(" ");
-
-        do
-        {
-            Console.WriteLine("Digite uma resposta válida.");
-            resposta = Console.ReadLine()?.ToUpper() ?? string.Empty;
-
-            if (resposta == "NAO")
-            {
-                resposta = "NÃO";
-            }
-        } while (resposta != "SIM" && resposta != "NÃO");
-
-
-        if (resposta == "NÃO")
-        {
-            Console.WriteLine(" ");
-            Console.WriteLine($"Você recebeu 3 propostas, todas contratos máximos por 3 anos:");
-            Console.WriteLine($"1- {team1}");
-            Console.WriteLine($"2- {team2}");
-            Console.WriteLine($"3- {team3}");
-            Console.WriteLine(" ");
-            Console.WriteLine("Qual das 3 você deseja aceitar?");
-            do
-            {
-                selected = int.Parse(Console.ReadLine());
-            } while (selected < 1 || selected > 3);
-        }
-
-        if (selected == 1)
-        {
-            playerTeam = team1;
-            if (easternNbaTeams.Contains(team1))
-            {
-                teamConference = "Leste";
-            }
-            else
-            {
-                teamConference = "Oeste";
-            }
-        }
-        if (selected == 2)
-        {
-            playerTeam = team2;
-            if (easternNbaTeams.Contains(team1))
-            {
-                teamConference = "Leste";
-            }
-            else
-            {
-                teamConference = "Oeste";
-            }
-        }
-        if (selected == 3)
-        {
-            playerTeam = team3;
-            if (easternNbaTeams.Contains(team1))
-            {
-                teamConference = "Leste";
-            }
-            else
-            {
-                teamConference = "Oeste";
-            }
-        }
-        Console.WriteLine(" ");
-        Console.WriteLine("==============================================================================");
-        Console.WriteLine(" ");
-
+        Console.WriteLine("Erro: Os arrays de equipes não podem ser nulos.");
+        return;
     }
+
+    string resposta = string.Empty;
+    Random random = new Random();
+    string team1 = string.Empty,
+            team2 = string.Empty,
+            team3 = string.Empty;
+    int selected = 0;
+
+    if (allNbaTeams.Length < 3)
+    {
+        Console.WriteLine("Erro: Não há equipes suficientes para prosseguir com a simulação.");
+        return;
+    }
+
+    do
+    {
+        team1 = allNbaTeams[random.Next(0, allNbaTeams.Length)];
+    } while (team1 == playerTeam);
+
+    do
+    {
+        team2 = allNbaTeams[random.Next(0, allNbaTeams.Length)];
+    } while (team2 == team1);
+
+    do
+    {
+        team3 = allNbaTeams[random.Next(0, allNbaTeams.Length)];
+    } while (team3 == team1 || team3 == team2);
+
+    Console.WriteLine($"Seu contrato com o {playerTeam} acabou. Você recebeu uma proposta de extensão por 3 anos, deseja continuar?\nResponda com sim ou não");
+    Console.WriteLine(" ");
+
+    do
+    {
+        Console.WriteLine("Digite uma resposta válida.");
+        resposta = Console.ReadLine()?.ToUpper() ?? string.Empty;
+
+        if (resposta == "NAO")
+        {
+            resposta = "NÃO";
+        }
+    } while (resposta != "SIM" && resposta != "NÃO");
+
+    bool validInput;
+
+    if (resposta == "NÃO")
+    {
+        Console.WriteLine(" ");
+        Console.WriteLine($"Você recebeu 3 propostas, todas contratos máximos por 3 anos:");
+        Console.WriteLine($"1- {team1}");
+        Console.WriteLine($"2- {team2}");
+        Console.WriteLine($"3- {team3}");
+        Console.WriteLine(" ");
+        Console.WriteLine("Qual das 3 você deseja aceitar?");
+
+        do
+        {
+            string input = Console.ReadLine()?.ToUpper() ?? string.Empty;
+            validInput = int.TryParse(input, out selected);
+
+            if (!validInput || selected < 1 || selected > 3)
+            {
+                Console.WriteLine("Entrada inválida. Por favor, digite um número de 1 a 3.");
+            }
+        } while (!validInput || selected < 1 || selected > 3);
+    }
+
+    if (selected >= 1 && selected <= 3)
+    {
+        playerTeam = selected == 1 ? team1 : (selected == 2 ? team2 : team3);
+        teamConference = easternNbaTeams.Contains(playerTeam) ? "Leste" : "Oeste";
+    }
+
+    Console.WriteLine(" ");
+    Console.WriteLine("==============================================================================");
+    Console.WriteLine(" ");
+}
+
 
 }
