@@ -175,9 +175,6 @@ class Program
         int ovrPlayer = OvrRookie(totalMediaStats);
 
         Console.WriteLine($"{playerName} teve um overral de {ovrPlayer} ao final da temporada regular!");
-        Console.WriteLine(" ");
-        Console.WriteLine("==============================================================================");
-        Console.WriteLine(" ");
 
         // Simulação dos Playoffs
         int pTotalP = 0,
@@ -191,14 +188,17 @@ class Program
 
         if (seasonCondition != 3)
         {
+            Console.WriteLine(" ");
+            Console.WriteLine("==============================================================================");
+            Console.WriteLine(" ");
             do
             {
                 Console.WriteLine("Pronto para os playoffs?");
                 continueSim = Console.ReadLine()?.ToUpper() ?? string.Empty;
             } while (continueSim != "SIM");
 
-
             // Simulação dos Playoffs
+            
             PlayoffsSim(seasonCondition, easternNbaTeams, westernNbaTeams, teamConference, nbaTeamSelected, ref pTotalP, ref pTotalR, ref pTotalA, ref nbaChamp, ref nbaFMVP);
 
             // Stats nos Playoffs
@@ -261,12 +261,20 @@ class Program
                 }
 
                 TeamSeed(playerTeam, teamForce, ref condRegularSeason, ref seasonCondition, ref TeamConference, nbaTeamSelected);
+                Console.WriteLine(condRegularSeason);
                 Console.WriteLine(" ");
                 Console.WriteLine("==============================================================================");
                 Console.WriteLine(" ");
 
                 PlayoffsSim(seasonCondition, easternNbaTeams, westernNbaTeams, teamConference, nbaTeamSelected, ref pTotalP, ref pTotalR, ref pTotalA, ref nbaChamp, ref nbaFMVP);
+                Console.WriteLine(" ");
+                Console.WriteLine("==============================================================================");
+                Console.WriteLine(" ");
+
                 PlayoffsPerfomance(ref offsP, ref offsR, ref offsA, ref ovrPlayer, ref condOffs, playerName, seasonCondition);
+                Console.WriteLine(" ");
+                Console.WriteLine("==============================================================================");
+                Console.WriteLine(" ");
 
                 seasonCount++;
                 playerAge++;
@@ -596,10 +604,6 @@ class Program
         else if (teamForce == 3)
         {
             wins = random.Next(18, 42);
-        }
-        else
-        {
-            throw new ArgumentOutOfRangeException(nameof(teamForce), "O valor de teamForce deve ser 1, 2 ou 3.");
         }
 
         loses = 82 - wins;
