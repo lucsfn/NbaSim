@@ -264,9 +264,6 @@ class Program
 
                 // Simulação dos Playoffs
                 PlayoffsSim(seasonCondition, easternNbaTeams, westernNbaTeams, teamConference, playerTeam, ref nbaChamp, ref nbaFMVP, ovrPlayer);
-                Console.WriteLine(" ");
-                Console.WriteLine("==============================================================================");
-                Console.WriteLine(" ");
 
                 // Stats nos Playoffs
                 PlayoffsPerfomance(ref offsP, ref offsR, ref offsA, ref ovrPlayer, ref condOffs, playerName, seasonCondition, playerPosition, regularSeasonPPG, regularSeasonRPG, regularSeasonAPG);
@@ -274,6 +271,8 @@ class Program
 
             seasonCount++;
             playerAge++;
+
+            FreeAgency(ref playerTeam, allNbaTeams, easternNbaTeams,  westernNbaTeams, ref teamConference);
 
             // Verifica se a idade do jogador é maior que 40 para encerrar o programa
             if (playerAge > 40)
@@ -286,7 +285,7 @@ class Program
                 Console.WriteLine(" ");
                 Console.WriteLine("==============================================================================");
                 Console.WriteLine(" ");
-                break; // Encerra o loop
+                break;
             }
 
             // Pergunta se deseja continuar a simulação
@@ -301,6 +300,8 @@ class Program
             Console.Clear();
         } while (continueSim == "SIM");
 
+        if (playerAge <= 39)
+        {
         Console.WriteLine(" ");
         Console.WriteLine("==============================================================================");
         Console.WriteLine(" ");
@@ -310,6 +311,7 @@ class Program
         Console.WriteLine(" ");
         Console.WriteLine("==============================================================================");
         Console.WriteLine(" ");
+        }
 
     }
 
@@ -745,7 +747,9 @@ class Program
         int diffRPG = regularSeasonRPG - oldRPG;
         int diffAPG = regularSeasonAPG - oldAPG;
 
-        if (diffPPG > 4)
+        if (playerAge < 34)
+        {
+            if (diffPPG > 4)
         {
             regularSeasonPPG = oldPPG + 4;
         }
@@ -771,6 +775,7 @@ class Program
         {
             regularSeasonAPG = oldAPG - 2;
         }
+        }
 
         totalMediaStats = regularSeasonPPG + regularSeasonRPG + regularSeasonAPG;
 
@@ -794,9 +799,9 @@ class Program
             ovrPlayer -= random.Next(0, 2);
         }
 
-        if (playerAge > 35)
+        if (playerAge > 33)
         {
-            ovrPlayer -= random.Next(0, 4);
+            ovrPlayer -= random.Next(0, 3);
         }
 
         if (playerAge <= 22)
@@ -832,7 +837,8 @@ class Program
         int wins = 0,
             loses = 0;
 
-        bool FVMPWin = false;
+        bool FMVPwin = false;
+        int chanceToWinFVMP = random.Next(0, 4);
         double winChanceAdjustment = 0;
 
         if (teamConference == "Leste")
@@ -921,11 +927,15 @@ class Program
                             {
                                 loses = random.Next(0, 4);
                                 Console.WriteLine($"O {playerTeam} enfrentou o {finalTeam} nas finais da NBA e ganhou por {wins} - {loses}!");
-                                Console.WriteLine(" ");
-                                Console.WriteLine("==============================================================================");
-                                Console.WriteLine(" ");
+                                Console.WriteLine(" ");                                
                                 nbaChamp++;
-                                FVMPWin = random.Next(0, 2) == 0;
+                                if (chanceToWinFVMP != 0)
+                                {
+                                    Console.WriteLine("Além disso, foi coroado o FMVP!");
+                                    Console.WriteLine("==============================================================================");
+                                    Console.WriteLine(" ");
+                                    FMVPwin = true;
+                                }
                             }
                             else
                             {
@@ -1046,10 +1056,14 @@ class Program
                                     loses = random.Next(0, 4);
                                     Console.WriteLine($"O {playerTeam} enfrentou o {finalTeam} nas finais da NBA e ganhou por {wins} - {loses}!");
                                     Console.WriteLine(" ");
+                                    nbaChamp++;
+                                    if (chanceToWinFVMP != 0)
+                                {
+                                    Console.WriteLine("Além disso, foi coroado o FMVP!");
                                     Console.WriteLine("==============================================================================");
                                     Console.WriteLine(" ");
-                                    nbaChamp++;
-                                    FVMPWin = random.Next(0, 2) == 0;
+                                    FMVPwin = true;
+                                }
                                 }
                                 else
                                 {
@@ -1174,10 +1188,14 @@ class Program
                                 loses = random.Next(0, 4);
                                 Console.WriteLine($"O {playerTeam} enfrentou o {finalTeam} nas finais da NBA e ganhou por {wins} - {loses}!");
                                 Console.WriteLine(" ");
-                                Console.WriteLine("==============================================================================");
-                                Console.WriteLine(" ");
                                 nbaChamp++;
-                                FVMPWin = random.Next(0, 2) == 0;
+                                if (chanceToWinFVMP != 0)
+                                {
+                                    Console.WriteLine("Além disso, foi coroado o FMVP!");
+                                    Console.WriteLine("==============================================================================");
+                                    Console.WriteLine(" ");
+                                    FMVPwin = true;
+                                }
                             }
                             else
                             {
@@ -1216,10 +1234,10 @@ class Program
                     wins = 4;
                 }
 
-                if (wins == 4)
+                if (wins > -1)
                 {
-                    loses = random.Next(0, 4);
-                    Console.WriteLine($"O {playerTeam} enfrentou o {playInTeam} no play-in e ganhou por {wins} - {loses}!");
+                    loses = 0;
+                    Console.WriteLine($"O {playerTeam} enfrentou o {playInTeam} no play-in e ganhou por 1 - 0!");
                     Console.WriteLine(" ");
                     Console.WriteLine("==============================================================================");
                     Console.WriteLine(" ");
@@ -1294,10 +1312,14 @@ class Program
                                     loses = random.Next(0, 4);
                                     Console.WriteLine($"O {playerTeam} enfrentou o {finalTeam} nas finais da NBA e ganhou por {wins} - {loses}!");
                                     Console.WriteLine(" ");
+                                    nbaChamp++;
+                                    if (chanceToWinFVMP != 0)
+                                {
+                                    Console.WriteLine("Além disso, foi coroado o FMVP!");
                                     Console.WriteLine("==============================================================================");
                                     Console.WriteLine(" ");
-                                    nbaChamp++;
-                                    FVMPWin = random.Next(0, 2) == 0;
+                                    FMVPwin = true;
+                                }
                                 }
                                 else
                                 {
@@ -1326,7 +1348,7 @@ class Program
             }
         }
 
-        if (FVMPWin == true)
+        if (FMVPwin == true)
         {
             nbaFMVP++;
         }
@@ -1341,45 +1363,45 @@ class Program
         {
             if (ovrPlayer > 95)
             {
-                offsP = random.Next(Math.Max(23 - 3, 0), Math.Min(39 + 3, 50));
-                offsR = random.Next(Math.Max(5 - 3, 0), Math.Min(13 + 3, 20));
-                offsA = random.Next(Math.Max(5 - 3, 0), Math.Min(13 + 3, 20));
+                offsP = random.Next(Math.Max(23 , 0), Math.Min(39 + 3, 50));
+                offsR = random.Next(Math.Max(5 , 0), Math.Min(13 + 3, 20));
+                offsA = random.Next(Math.Max(5 , 0), Math.Min(13 + 3, 20));
             }
             else if (ovrPlayer > 90)
             {
-                offsP = random.Next(Math.Max(21 - 3, 0), Math.Min(33 + 3, 50));
-                offsR = random.Next(Math.Max(5 - 3, 0), Math.Min(9 + 3, 20));
-                offsA = random.Next(Math.Max(5 - 3, 0), Math.Min(9 + 3, 20));
+                offsP = random.Next(Math.Max(21 , 0), Math.Min(33 + 3, 50));
+                offsR = random.Next(Math.Max(5 , 0), Math.Min(9 + 3, 20));
+                offsA = random.Next(Math.Max(5 , 0), Math.Min(9 + 3, 20));
             }
             else if (ovrPlayer > 86)
             {
-                offsP = random.Next(Math.Max(18 - 3, 0), Math.Min(28 + 3, 50));
-                offsR = random.Next(Math.Max(4 - 3, 0), Math.Min(8 + 3, 20));
-                offsA = random.Next(Math.Max(4 - 3, 0), Math.Min(9 + 3, 20));
+                offsP = random.Next(Math.Max(18 , 0), Math.Min(28 + 3, 50));
+                offsR = random.Next(Math.Max(4 , 0), Math.Min(8 + 3, 20));
+                offsA = random.Next(Math.Max(4 , 0), Math.Min(9 + 3, 20));
             }
             else if (ovrPlayer > 82)
             {
-                offsP = random.Next(Math.Max(17 - 3, 0), Math.Min(25 + 3, 50));
-                offsR = random.Next(Math.Max(3 - 3, 0), Math.Min(8 + 3, 20));
-                offsA = random.Next(Math.Max(4 - 3, 0), Math.Min(9 + 3, 20));
+                offsP = random.Next(Math.Max(17 , 0), Math.Min(25 + 3, 50));
+                offsR = random.Next(Math.Max(3 , 0), Math.Min(8 + 3, 20));
+                offsA = random.Next(Math.Max(4 , 0), Math.Min(9 + 3, 20));
             }
             else if (ovrPlayer > 79)
             {
-                offsP = random.Next(Math.Max(14 - 3, 0), Math.Min(19 + 3, 50));
-                offsR = random.Next(Math.Max(2 - 3, 0), Math.Min(7 + 3, 20));
-                offsA = random.Next(Math.Max(3 - 3, 0), Math.Min(8 + 3, 20));
+                offsP = random.Next(Math.Max(14 , 0), Math.Min(19 + 3, 50));
+                offsR = random.Next(Math.Max(2 , 0), Math.Min(7 + 3, 20));
+                offsA = random.Next(Math.Max(3 , 0), Math.Min(8 + 3, 20));
             }
             else if (ovrPlayer > 74)
             {
-                offsP = random.Next(Math.Max(11 - 3, 0), Math.Min(17 + 3, 50));
-                offsR = random.Next(Math.Max(2 - 3, 0), Math.Min(5 + 3, 20));
-                offsA = random.Next(Math.Max(3 - 3, 0), Math.Min(6 + 3, 20));
+                offsP = random.Next(Math.Max(11 , 0), Math.Min(17 + 3, 50));
+                offsR = random.Next(Math.Max(2 , 0), Math.Min(5 + 3, 20));
+                offsA = random.Next(Math.Max(3 , 0), Math.Min(6 + 3, 20));
             }
             else
             {
-                offsP = random.Next(Math.Max(9 - 3, 0), Math.Min(15 + 3, 50));
-                offsR = random.Next(Math.Max(2 - 3, 0), Math.Min(5 + 3, 20));
-                offsA = random.Next(Math.Max(3 - 3, 0), Math.Min(5 + 3, 20));
+                offsP = random.Next(Math.Max(9 , 0), Math.Min(15 + 3, 50));
+                offsR = random.Next(Math.Max(2 , 0), Math.Min(5 + 3, 20));
+                offsA = random.Next(Math.Max(3 , 0), Math.Min(5 + 3, 20));
             }
 
             if (playerPosition == "PG" && random.NextDouble() < 0.5)
@@ -1403,7 +1425,6 @@ class Program
             Console.WriteLine($"{offsP} pontos por jogo");
             Console.WriteLine($"{offsR} rebotes por jogo");
             Console.WriteLine($"{offsA} assistências por jogo");
-            Console.WriteLine(" ");
         }
 
     }
