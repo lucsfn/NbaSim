@@ -23,6 +23,8 @@ class Program
         Console.WriteLine(" ");
 
         int playerAge = 18;
+        string continueSim = string.Empty;
+        string condOffs = string.Empty;
 
         // Array dos times da Nba
         string[] allNbaTeams = new string[]
@@ -138,11 +140,11 @@ class Program
         Console.WriteLine(" ");
         if (winRoy)
         {
-            Console.WriteLine("Além de ganhar o roy!");
+            Console.WriteLine("Além de ganhar o ROY!");
         }
         else
         {
-            Console.WriteLine("Além disso, o jogador não ganhou o roy.");
+            Console.WriteLine("Além disso, o jogador não ganhou o ROY.");
         }
         Console.WriteLine(" ");
         Console.WriteLine("==============================================================================");
@@ -184,16 +186,23 @@ class Program
             nbaChamp = 0,
             nbaFMVP = 0;
 
-        PlayoffsSim(seasonCondition, easternNbaTeams, westernNbaTeams, teamConference, nbaTeamSelected, ref pTotalP, ref pTotalR, ref pTotalA, ref nbaChamp, ref nbaFMVP);
-
-        // Stats nos Playoffs
+        Console.WriteLine("Pronto para os playoffs?");
+        continueSim = Console.ReadLine()?.ToUpper() ?? string.Empty;
         int offsP = 0,
             offsR = 0,
             offsA = 0;
-        string condOffs = string.Empty;
+
+        if (continueSim == "SIM")
+        {
+            PlayoffsSim(seasonCondition, easternNbaTeams, westernNbaTeams, teamConference, nbaTeamSelected, ref pTotalP, ref pTotalR, ref pTotalA, ref nbaChamp, ref nbaFMVP);
+
+        // Stats nos Playoffs
+        
         playerAge++;
 
         PlayoffsPerfomance(ref offsP, ref offsR, ref offsA, ref ovrPlayer, ref condOffs, playerName, seasonCondition);
+        }
+      
 
         // Próximas temporadas
         int teamForce = teamRookieForce;
@@ -201,22 +210,30 @@ class Program
         string condRegularSeason = string.Empty;
         int seasonCount = 2;
         int mvp = 0;
-        string continueSim = string.Empty;
         Console.WriteLine(" ");
         Console.WriteLine("==============================================================================");
         Console.WriteLine(" ");
-
-        do
+        
+        Console.WriteLine("Pronto para a segunda temporada?");
+        continueSim = Console.ReadLine()?.ToUpper() ?? string.Empty;
+        
+        if (continueSim == "SIM")
         {
+            do
+        {
+            continueSim = string.Empty;
             Console.WriteLine($"Vamos para a sua {seasonCount} temporada!");
             Console.WriteLine(" ");
             Console.WriteLine("==============================================================================");
             Console.WriteLine(" ");
 
-            TeamSeed(playerTeam, teamForce, ref condRegularSeason, ref seasonCondition, ref TeamConference, nbaTeamSelected);
-
+            // Simulando os stats de temporada regular, além de imprimir
             RegularSeasonStats(ref ovrPlayer, ref regularSeasonGamesPlayed, ref regularSeasonPPG, ref regularSeasonRPG, ref regularSeasonAPG, totalMediaStats, playerAge);
+
+            // Calculando os stats totais a cada season
             RegularSeasonTotalStats(ref regularSeasonGamesPlayed, ref regularSeasonPPG, ref regularSeasonRPG, ref regularSeasonAPG, ref totalP, ref totalR, ref totalA, ref totalMediaStats);
+
+            // Saber se o jogador ganhou ou não o MVP
             bool winMVP = MVP(ovrPlayer, totalMediaStats);
 
             Console.WriteLine($"O jogador {playerName} jogou {regularSeasonGamesPlayed} jogos na sua {seasonCount}º temporada e obteve as seguintes médias:");
@@ -238,6 +255,11 @@ class Program
                 Console.WriteLine(" ");
             }
 
+            TeamSeed(playerTeam, teamForce, ref condRegularSeason, ref seasonCondition, ref TeamConference, nbaTeamSelected);
+            Console.WriteLine(" ");
+            Console.WriteLine("==============================================================================");
+            Console.WriteLine(" ");
+
             PlayoffsSim(seasonCondition, easternNbaTeams, westernNbaTeams, teamConference, nbaTeamSelected, ref pTotalP, ref pTotalR, ref pTotalA, ref nbaChamp, ref nbaFMVP);
             PlayoffsPerfomance(ref offsP, ref offsR, ref offsA, ref ovrPlayer, ref condOffs, playerName, seasonCondition);
 
@@ -250,7 +272,7 @@ class Program
             }
             do
             {
-                Console.WriteLine($"Deseja continuar a simulação? {playerName} está com {playerAge} anos, na sua {seasonCount} temporada na liga.");
+                Console.WriteLine($"Deseja continuar a simulação? {playerName} está com {playerAge} anos, na sua {seasonCount}º temporada na liga.");
 
                 continueSim = Console.ReadLine()?.ToUpper() ?? string.Empty;
 
@@ -261,7 +283,9 @@ class Program
             } while (continueSim != "SIM" && continueSim != "NÃO");
 
 
-        } while (continueSim == "SIM");
+        } while (continueSim == "SIM" || playerAge == 40);
+        }
+
         Console.WriteLine(" ");
         Console.WriteLine("==============================================================================");
         Console.WriteLine(" ");
@@ -568,9 +592,12 @@ class Program
         {
             wins = random.Next(18, 42);
         }
+        else
+        {
+            throw new ArgumentOutOfRangeException(nameof(teamForce), "O valor de teamForce deve ser 1, 2 ou 3.");
+        }
 
         loses = 82 - wins;
-
 
         if (wins >= 56)
         {
@@ -578,19 +605,19 @@ class Program
             seasonCondition = 1;
             condRegularSeason = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L e classificou para os playoffs em {teamPosition}º no {TeamConference}!";
         }
-        else if (wins <= 55 && wins >= 48)
+        else if (wins >= 48)
         {
             teamPosition = random.Next(4, 7);
             seasonCondition = 1;
             condRegularSeason = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L e classificou para os playoffs em {teamPosition}º no {TeamConference}!";
         }
-        else if (wins <= 47 && wins >= 41)
+        else if (wins >= 41)
         {
             teamPosition = random.Next(7, 11);
             seasonCondition = 2;
             condRegularSeason = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L e classificou para o play-in em {teamPosition}º no {TeamConference}!";
         }
-        else if (wins <= 41)
+        else
         {
             teamPosition = random.Next(11, 16);
             seasonCondition = 3;
@@ -1154,89 +1181,87 @@ class Program
     }
 
     public static void FreeAgency(ref string playerTeam, string[] allNbaTeams, string[] easternNbaTeams, string[] westernNbaTeams, ref string teamConference)
-{
-    if (allNbaTeams == null || easternNbaTeams == null || westernNbaTeams == null)
     {
-        Console.WriteLine("Erro: Os arrays de equipes não podem ser nulos.");
-        return;
-    }
-
-    string resposta = string.Empty;
-    Random random = new Random();
-    string team1 = string.Empty,
-            team2 = string.Empty,
-            team3 = string.Empty;
-    int selected = 0;
-
-    if (allNbaTeams.Length < 3)
-    {
-        Console.WriteLine("Erro: Não há equipes suficientes para prosseguir com a simulação.");
-        return;
-    }
-
-    do
-    {
-        team1 = allNbaTeams[random.Next(0, allNbaTeams.Length)];
-    } while (team1 == playerTeam);
-
-    do
-    {
-        team2 = allNbaTeams[random.Next(0, allNbaTeams.Length)];
-    } while (team2 == team1);
-
-    do
-    {
-        team3 = allNbaTeams[random.Next(0, allNbaTeams.Length)];
-    } while (team3 == team1 || team3 == team2);
-
-    Console.WriteLine($"Seu contrato com o {playerTeam} acabou. Você recebeu uma proposta de extensão por 3 anos, deseja continuar?\nResponda com sim ou não");
-    Console.WriteLine(" ");
-
-    do
-    {
-        Console.WriteLine("Digite uma resposta válida.");
-        resposta = Console.ReadLine()?.ToUpper() ?? string.Empty;
-
-        if (resposta == "NAO")
+        if (allNbaTeams == null || easternNbaTeams == null || westernNbaTeams == null)
         {
-            resposta = "NÃO";
+            Console.WriteLine("Erro: Os arrays de equipes não podem ser nulos.");
+            return;
         }
-    } while (resposta != "SIM" && resposta != "NÃO");
 
-    bool validInput;
+        string resposta = string.Empty;
+        Random random = new Random();
+        string team1 = string.Empty,
+                team2 = string.Empty,
+                team3 = string.Empty;
+        int selected = 0;
 
-    if (resposta == "NÃO")
-    {
-        Console.WriteLine(" ");
-        Console.WriteLine($"Você recebeu 3 propostas, todas contratos máximos por 3 anos:");
-        Console.WriteLine($"1- {team1}");
-        Console.WriteLine($"2- {team2}");
-        Console.WriteLine($"3- {team3}");
-        Console.WriteLine(" ");
-        Console.WriteLine("Qual das 3 você deseja aceitar?");
+        if (allNbaTeams.Length < 3)
+        {
+            Console.WriteLine("Erro: Não há equipes suficientes para prosseguir com a simulação.");
+            return;
+        }
 
         do
         {
-            string input = Console.ReadLine()?.ToUpper() ?? string.Empty;
-            validInput = int.TryParse(input, out selected);
+            team1 = allNbaTeams[random.Next(0, allNbaTeams.Length)];
+        } while (team1 == playerTeam);
 
-            if (!validInput || selected < 1 || selected > 3)
+        do
+        {
+            team2 = allNbaTeams[random.Next(0, allNbaTeams.Length)];
+        } while (team2 == team1);
+
+        do
+        {
+            team3 = allNbaTeams[random.Next(0, allNbaTeams.Length)];
+        } while (team3 == team1 || team3 == team2);
+
+        Console.WriteLine($"Seu contrato com o {playerTeam} acabou. Você recebeu uma proposta de extensão por 3 anos, deseja continuar?\nResponda com sim ou não");
+        Console.WriteLine(" ");
+
+        do
+        {
+            Console.WriteLine("Digite uma resposta válida.");
+            resposta = Console.ReadLine()?.ToUpper() ?? string.Empty;
+
+            if (resposta == "NAO")
             {
-                Console.WriteLine("Entrada inválida. Por favor, digite um número de 1 a 3.");
+                resposta = "NÃO";
             }
-        } while (!validInput || selected < 1 || selected > 3);
+        } while (resposta != "SIM" && resposta != "NÃO");
+
+        bool validInput;
+
+        if (resposta == "NÃO")
+        {
+            Console.WriteLine(" ");
+            Console.WriteLine($"Você recebeu 3 propostas, todas contratos máximos por 3 anos:");
+            Console.WriteLine($"1- {team1}");
+            Console.WriteLine($"2- {team2}");
+            Console.WriteLine($"3- {team3}");
+            Console.WriteLine(" ");
+            Console.WriteLine("Qual das 3 você deseja aceitar?");
+
+            do
+            {
+                string input = Console.ReadLine()?.ToUpper() ?? string.Empty;
+                validInput = int.TryParse(input, out selected);
+
+                if (!validInput || selected < 1 || selected > 3)
+                {
+                    Console.WriteLine("Entrada inválida. Por favor, digite um número de 1 a 3.");
+                }
+            } while (!validInput || selected < 1 || selected > 3);
+        }
+
+        if (selected >= 1 && selected <= 3)
+        {
+            playerTeam = selected == 1 ? team1 : (selected == 2 ? team2 : team3);
+            teamConference = easternNbaTeams.Contains(playerTeam) ? "Leste" : "Oeste";
+        }
+
+        Console.WriteLine(" ");
+        Console.WriteLine("==============================================================================");
+        Console.WriteLine(" ");
     }
-
-    if (selected >= 1 && selected <= 3)
-    {
-        playerTeam = selected == 1 ? team1 : (selected == 2 ? team2 : team3);
-        teamConference = easternNbaTeams.Contains(playerTeam) ? "Leste" : "Oeste";
-    }
-
-    Console.WriteLine(" ");
-    Console.WriteLine("==============================================================================");
-    Console.WriteLine(" ");
-}
-
-
 }
