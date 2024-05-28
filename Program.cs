@@ -170,7 +170,7 @@ class Program
             totalA = 0,
             totalMediaStats = 0;
 
-        RegularSeasonTotalStats(ref regularSeasonGamesPlayed, ref regularSeasonPPG, ref regularSeasonRPG, ref regularSeasonAPG, ref totalP, ref totalR, ref totalA, ref totalMediaStats, ref totalG);
+        RegularSeasonTotalStats(regularSeasonGamesPlayed,  regularSeasonPPG,  regularSeasonRPG,  regularSeasonAPG, ref totalP, ref totalR, ref totalA, ref totalMediaStats, ref totalG);
 
         // Cálculo OVR Rookie
         int ovrPlayer = OvrRookie(totalMediaStats);
@@ -232,7 +232,7 @@ class Program
                 RegularSeasonStats(ref ovrPlayer, ref regularSeasonGamesPlayed, ref regularSeasonPPG, ref regularSeasonRPG, ref regularSeasonAPG, totalMediaStats, playerAge, playerPosition);
 
                 // Calculando os stats totais a cada season
-                RegularSeasonTotalStats(ref regularSeasonGamesPlayed, ref regularSeasonPPG, ref regularSeasonRPG, ref regularSeasonAPG, ref totalP, ref totalR, ref totalA, ref totalMediaStats, ref totalG);
+                RegularSeasonTotalStats(regularSeasonGamesPlayed,  regularSeasonPPG,  regularSeasonRPG,  regularSeasonAPG, ref totalP, ref totalR, ref totalA, ref totalMediaStats, ref totalG);
 
                 // Saber se o jogador ganhou ou não o MVP
                 bool winMVP = MVP(ovrPlayer, totalMediaStats, regularSeasonGamesPlayed);
@@ -546,7 +546,7 @@ class Program
         }
         else if (wins <= 47 && wins >= 41)
         {
-            teamPosition = random.Next(7, 11);
+            teamPosition = random.Next(7, 9);
             seasonCondition = 2;
             condRookie = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L e classificou para o play-in em {teamPosition}º no {TeamConference}!";
         }
@@ -564,7 +564,7 @@ class Program
         }
     }
 
-    public static void RegularSeasonTotalStats(ref int regularSeasonGamesPlayed, ref int regularSeasonPPG, ref int regularSeasonRPG, ref int regularSeasonAPG, ref int totalP, ref int totalR, ref int totalA, ref int totalMediaStats, ref int totalG)
+    public static void RegularSeasonTotalStats(int regularSeasonGamesPlayed, int regularSeasonPPG, int regularSeasonRPG, int regularSeasonAPG, ref int totalP, ref int totalR, ref int totalA, ref int totalMediaStats, ref int totalG)
     {
         totalMediaStats = regularSeasonPPG + regularSeasonRPG + regularSeasonAPG;
 
@@ -786,7 +786,7 @@ class Program
 
         if (playerAge <= 22)
         {
-            ovrPlayer += random.Next(1, 4);
+            ovrPlayer += random.Next(0, 2);
         }
 
     }
@@ -794,11 +794,13 @@ class Program
     public static bool MVP(int ovrPlayer, int totalMediaStats, int regularSeasonGamesPlayed)
     {
         Random random = new Random();
+        int numberMVP = random.Next(0, 10);
+
         bool mvpWin = false;
 
-        if (ovrPlayer > 84 && totalMediaStats > 39 && regularSeasonGamesPlayed > 58)
+        if (ovrPlayer > 84 && totalMediaStats > 39 && regularSeasonGamesPlayed > 58 && numberMVP >= 7)
         {
-            mvpWin = random.Next(2) == 0;
+            mvpWin = true;
         }
 
         return mvpWin;
