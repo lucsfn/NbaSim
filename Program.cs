@@ -23,7 +23,7 @@ class Program
         Console.WriteLine("==============================================================================");
         Console.WriteLine(" ");
 
-        int playerAge = 18;
+        int playerAge = 19;
         string continueSim = string.Empty;
         string condOffs = string.Empty;
 
@@ -176,6 +176,9 @@ class Program
         int ovrPlayer = OvrRookie(totalMediaStats);
 
         Console.WriteLine($"{playerName} teve um overral de {ovrPlayer} ao final da temporada regular!");
+        Console.WriteLine(" ");
+        Console.WriteLine("==============================================================================");
+        Console.WriteLine(" ");
 
         // Simulação dos Playoffs
         int nbaChamp = 0,
@@ -194,7 +197,6 @@ class Program
                 Console.WriteLine("Pronto para os playoffs?");
                 continueSim = Console.ReadLine()?.ToUpper() ?? string.Empty;
             } while (continueSim != "SIM");
-            Console.Clear();
 
             // Simulação dos Playoffs
 
@@ -211,14 +213,12 @@ class Program
         string condRegularSeason = string.Empty;
         int seasonCount = 2;
         int mvp = 0;
-        Console.WriteLine(" ");
-        Console.WriteLine("==============================================================================");
-        Console.WriteLine(" ");
 
         Console.WriteLine("Pronto para a segunda temporada?");
         continueSim = Console.ReadLine()?.ToUpper() ?? string.Empty;
+        Console.Clear();
 
-        if (continueSim == "SIM")
+        if (continueSim == "SIM" || playerAge <= 40)
         {
             do
             {
@@ -290,6 +290,9 @@ class Program
                 }
                 do
                 {
+                    Console.WriteLine(" ");
+                    Console.WriteLine("==============================================================================");
+                    Console.WriteLine(" ");
                     Console.WriteLine($"Deseja continuar a simulação? {playerName} está com {playerAge} anos, indo para sua {seasonCount}º temporada na liga.");
 
                     continueSim = Console.ReadLine()?.ToUpper() ?? string.Empty;
@@ -301,7 +304,7 @@ class Program
                 } while (continueSim != "SIM" && continueSim != "NÃO");
 
                 Console.Clear();
-            } while (continueSim == "SIM" || playerAge == 40);
+            } while (continueSim == "SIM");
         }
         Console.Clear();
         Console.WriteLine(" ");
@@ -428,21 +431,21 @@ class Program
         // Obtendo o número de jogos
         if (teamRookieForce == 1)
         {
-            regularSeasonGamesPlayed = random.Next(45, 61);
+            regularSeasonGamesPlayed = random.Next(60, 71);
         }
         else if (teamRookieForce == 2)
         {
-            regularSeasonGamesPlayed = random.Next(55, 76);
+            regularSeasonGamesPlayed = random.Next(60, 76);
         }
         else
         {
-            regularSeasonGamesPlayed = random.Next(60, 80);
+            regularSeasonGamesPlayed = random.Next(60, 83);
         }
 
         // Obtendo o número de pontos por jogo   
         if (teamRookieForce == 1)
         {
-            regularSeasonPPG = random.Next(12, 18);
+            regularSeasonPPG = random.Next(12, 19);
         }
         else if (teamRookieForce == 2)
         {
@@ -515,7 +518,7 @@ class Program
 
         if (teamRookieForce == 1)
         {
-            wins = random.Next(46, 66);
+            wins = random.Next(46, 69);
         }
         else if (teamRookieForce == 2)
         {
@@ -547,9 +550,15 @@ class Program
             seasonCondition = 2;
             condRookie = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L e classificou para o play-in em {teamPosition}º no {TeamConference}!";
         }
-        else if (wins <= 41)
+        else if (wins <= 41 && wins >= 32)
         {
-            teamPosition = random.Next(11, 16);
+            teamPosition = random.Next(10, 13);
+            seasonCondition = 3;
+            condRookie = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L no {TeamConference}, ficando em {teamPosition}º e não classificando para a pós-temporada.";
+        }
+        else 
+        {
+            teamPosition = random.Next(13, 16);
             seasonCondition = 3;
             condRookie = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L no {TeamConference}, ficando em {teamPosition}º e não classificando para a pós-temporada.";
         }
@@ -640,7 +649,13 @@ class Program
 
     wins += winIncrease;
 
-    if (wins >= 56)
+    if (wins >= 63)
+    {
+        teamPosition = random.Next(1, 3);
+        seasonCondition = 1;
+        condRegularSeason = $"O {playerTeam} obteve uma seed de {wins} W - {loses} L e classificou para os playoffs em {teamPosition}º no {TeamConference}!";
+    }
+    else if (wins >= 56)
     {
         teamPosition = random.Next(1, 4);
         seasonCondition = 1;
@@ -654,13 +669,13 @@ class Program
     }
     else if (wins >= 41)
     {
-        teamPosition = random.Next(7, 10);
+        teamPosition = random.Next(7, 9);
         seasonCondition = 2;
         condRegularSeason = $"O {playerTeam} obteve uma seed de {wins} W - {loses} L e classificou para o play-in em {teamPosition}º no {TeamConference}!";
     }
     else if (wins >= 35)
     {
-        teamPosition = random.Next(9, 13);
+        teamPosition = random.Next(11, 13);
         seasonCondition = 3;
         condRegularSeason = $"O {playerTeam} obteve uma seed de {wins} W - {loses} L no {TeamConference}, ficando em {teamPosition}º e não classificando para a pós-temporada.";
     }
@@ -670,6 +685,7 @@ class Program
         seasonCondition = 3;
         condRegularSeason = $"O {playerTeam} obteve uma seed de {wins} W - {loses} L no {TeamConference}, ficando em {teamPosition}º e não classificando para a pós-temporada.";
     }
+    else
     {
         teamPosition = random.Next(14, 16);
         seasonCondition = 3;
@@ -705,13 +721,13 @@ class Program
         }
         else if (ovrPlayer > 82)
         {
-            regularSeasonPPG = random.Next(17, 26);
+            regularSeasonPPG = random.Next(18, 26);
             regularSeasonRPG = random.Next(3, 8);
             regularSeasonAPG = random.Next(4, 9);
         }
         else if (ovrPlayer > 79)
         {
-            regularSeasonPPG = random.Next(14, 19);
+            regularSeasonPPG = random.Next(16, 19);
             regularSeasonRPG = random.Next(2, 7);
             regularSeasonAPG = random.Next(3, 8);
         }
@@ -745,7 +761,18 @@ class Program
 
         if (totalMediaStats > beforeStats && playerAge < 35)
         {
-            ovrPlayer += random.Next(0, 5);
+            if (ovrPlayer >= 99)
+            {
+                ovrPlayer += 0;
+            }
+            else if (ovrPlayer > 94)
+            {
+                ovrPlayer += random.Next(0, 2);
+            }
+            else {
+                ovrPlayer += random.Next(1, 6);
+            }
+            
         }
         else
         {
@@ -754,8 +781,14 @@ class Program
 
         if (playerAge > 35)
         {
-            ovrPlayer -= random.Next(0, 3);
+            ovrPlayer -= random.Next(0, 4);
         }
+
+        if (playerAge <= 22)
+        {
+            ovrPlayer += random.Next(1, 4);
+        }
+
     }
 
     public static bool MVP(int ovrPlayer, int totalMediaStats, int regularSeasonGamesPlayed)
@@ -915,10 +948,10 @@ class Program
                     wins = 4;
                 }
 
-                if (wins == 4)
+                if (wins > -1)
                 {
-                    loses = random.Next(0, 4);
-                    Console.WriteLine($"O {playerTeam} enfrentou o {playInTeam} no play-in e ganhou por {wins} - {loses}!");
+                    loses = 0;
+                    Console.WriteLine($"O {playerTeam} enfrentou o {playInTeam} no play-in e ganhou por 1 - 0!");
                     Console.WriteLine(" ");
                     Console.WriteLine("==============================================================================");
                     Console.WriteLine(" ");
