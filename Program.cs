@@ -126,12 +126,13 @@ class Program
         int regularSeasonGamesPlayed = 0,
             regularSeasonPPG = 0,
             regularSeasonRPG = 0,
-            regularSeasonAPG = 0;
+            regularSeasonAPG = 0,
+            ovr = 0;
 
         bool winRoy = false;
 
         // Função que simula o roy
-        RookieYear(ref teamRookieForce, ref regularSeasonGamesPlayed, ref regularSeasonPPG, ref regularSeasonRPG, ref regularSeasonAPG, ref winRoy);
+        RookieYear(ref teamRookieForce, ref regularSeasonGamesPlayed, ref regularSeasonPPG, ref regularSeasonRPG, ref regularSeasonAPG, ref winRoy, playerPosition, ref ovr);
 
         // Imprimindo resultado da Rookie Season
         Console.WriteLine($"O jogador {playerName} em seu Rookie Year jogou {regularSeasonGamesPlayed} jogos e obteve as seguintes médias:");
@@ -175,7 +176,7 @@ class Program
         RegularSeasonTotalStats(regularSeasonGamesPlayed, regularSeasonPPG, regularSeasonRPG, regularSeasonAPG, ref totalP, ref totalR, ref totalA, ref totalMediaStats, ref totalG);
 
         // Cálculo OVR Rookie
-        int ovrPlayer = OvrRookie(totalMediaStats);
+        int ovrPlayer = OvrRookie(totalMediaStats, ref ovr);
 
         Console.WriteLine($"{playerName} teve um overral de {ovrPlayer} ao final da temporada regular!");
         Console.WriteLine(" ");
@@ -231,7 +232,7 @@ class Program
             RegularSeasonTotalStats(regularSeasonGamesPlayed, regularSeasonPPG, regularSeasonRPG, regularSeasonAPG, ref totalP, ref totalR, ref totalA, ref totalMediaStats, ref totalG);
 
             // Saber se o jogador ganhou ou não o MVP
-            bool winMVP = MVP(ovrPlayer, totalMediaStats, regularSeasonGamesPlayed);
+            bool winMVP = MVP(ovrPlayer, totalMediaStats, regularSeasonGamesPlayed, seasonCondition);
 
             Console.WriteLine($"O jogador {playerName} jogou {regularSeasonGamesPlayed} jogos na sua {seasonCount}º temporada e obteve as seguintes médias:");
             Console.WriteLine(" ");
@@ -254,7 +255,9 @@ class Program
 
             ;
 
-            TeamSeed(playerTeam, teamForce, ref condRegularSeason, ref seasonCondition, ref TeamConference, ovrPlayer, ref teamPosition);
+            int oldTeamPosition = 10;
+
+            TeamSeed(playerTeam, teamForce, ref condRegularSeason, ref seasonCondition, ref TeamConference, ovrPlayer, ref teamPosition, ref oldTeamPosition);
             Console.WriteLine(condRegularSeason);
 
             if (seasonCondition != 3)
@@ -305,7 +308,7 @@ class Program
             continueSim = Console.ReadLine()?.ToUpper() ?? string.Empty;
 
             Console.Clear();
-        } while (continueSim == "SIM");
+        } while (continueSim == "SIM" && playerAge <= 40);
 
         if (playerAge <= 39)
         {
@@ -428,7 +431,7 @@ class Program
 
     }
 
-    public static void RookieYear(ref int teamRookieForce, ref int regularSeasonGamesPlayed, ref int regularSeasonPPG, ref int regularSeasonRPG, ref int regularSeasonAPG, ref bool winRoy)
+    public static void RookieYear(ref int teamRookieForce, ref int regularSeasonGamesPlayed, ref int regularSeasonPPG, ref int regularSeasonRPG, ref int regularSeasonAPG, ref bool winRoy, string playerPosition, ref int ovr)
     {
         Random random = new Random();
 
@@ -449,15 +452,15 @@ class Program
         // Obtendo o número de pontos por jogo   
         if (teamRookieForce == 1)
         {
-            regularSeasonPPG = random.Next(12, 19);
+            regularSeasonPPG = random.Next(14, 21);
         }
         else if (teamRookieForce == 2)
         {
-            regularSeasonPPG = random.Next(13, 21);
+            regularSeasonPPG = random.Next(15, 22);
         }
         else
         {
-            regularSeasonPPG = random.Next(14, 24);
+            regularSeasonPPG = random.Next(16, 25);
         }
 
         // Obtendo o número de rebotes por jogo   
@@ -469,7 +472,7 @@ class Program
         {
             regularSeasonRPG = random.Next(3, 7);
         }
-        else if (teamRookieForce == 3)
+        else
         {
             regularSeasonRPG = random.Next(3, 8);
         }
@@ -483,28 +486,61 @@ class Program
         {
             regularSeasonAPG = random.Next(2, 6);
         }
-        else if (teamRookieForce == 3)
+        else
         {
             regularSeasonAPG = random.Next(3, 7);
         }
 
-        int ProbWinroy = 0;
+        // Chance de melhorar estatísticas baseado na posição do jogador
+        if (playerPosition == "PG" && random.NextDouble() < 0.5)
+        {
+            regularSeasonAPG += random.Next(1, 3);
+            ovr += 1;
+        }
+        else if (playerPosition == "SG" && random.NextDouble() < 0.5)
+        {
+            regularSeasonPPG += random.Next(1, 3);
+            ovr += 1;
+        }
+        else if (playerPosition == "PF" && random.NextDouble() < 0.5)
+        {
+            regularSeasonPPG += random.Next(1, 3);
+            regularSeasonRPG += random.Next(1, 3);
+            ovr += 1;
+        }
+        else if (playerPosition == "C" && random.NextDouble() < 0.5)
+        {
+            regularSeasonRPG += random.Next(1, 3);
+            ovr += 1;
+        }
 
-        // Calculando probabilidade de ganhar o roy
+        int ProbWinRoy = 0;
+
+        // Verificar se o jogador é considerado GOAT status
+        if (random.Next(1, 16) == 1)
+        {
+            regularSeasonPPG += 3;
+            regularSeasonRPG += 2;
+            regularSeasonAPG += 2;
+            ovr += 3;
+            ProbWinRoy += 10;
+        }
+
+        // Calculando probabilidade de ganhar o ROY
         if (teamRookieForce == 1 && regularSeasonGamesPlayed >= 58 && regularSeasonPPG >= 16)
         {
-            ProbWinroy = random.Next(15, 55);
+            ProbWinRoy = random.Next(15, 55);
         }
         else if (teamRookieForce == 2 && regularSeasonGamesPlayed >= 58 && regularSeasonPPG >= 17)
         {
-            ProbWinroy = random.Next(25, 70);
+            ProbWinRoy = random.Next(25, 70);
         }
         else if (teamRookieForce == 3 && regularSeasonGamesPlayed >= 58 && regularSeasonPPG >= 18)
         {
-            ProbWinroy = random.Next(35, 80);
+            ProbWinRoy = random.Next(35, 80);
         }
 
-        if (ProbWinroy >= 50)
+        if (ProbWinRoy >= 50)
         {
             winRoy = true;
         }
@@ -578,9 +614,8 @@ class Program
         totalG += regularSeasonGamesPlayed;
     }
 
-    public static int OvrRookie(int totalMediaStats)
+    public static int OvrRookie(int totalMediaStats, ref int ovr)
     {
-        int ovr = 0;
 
         Random random = new Random();
 
@@ -600,7 +635,7 @@ class Program
         return ovr;
     }
 
-    public static void TeamSeed(string playerTeam, int teamForce, ref string condRegularSeason, ref int seasonCondition, ref string TeamConference, int ovrPlayer, ref int teamPosition)
+    public static void TeamSeed(string playerTeam, int teamForce, ref string condRegularSeason, ref int seasonCondition, ref string TeamConference, int ovrPlayer, ref int teamPosition, ref int oldTeamPosition)
     {
         Random random = new Random();
 
@@ -608,7 +643,6 @@ class Program
             loses = 0;
 
         teamPosition = 0;
-
         seasonCondition = 0;
 
         if (teamForce == 1)
@@ -632,27 +666,54 @@ class Program
             }
         }
 
-
         int winIncrease = 0;
         double winChanceAdjustment = 0.0;
+
         if (ovrPlayer > 95)
         {
-            winIncrease = random.Next(0, 6);
-            winChanceAdjustment = wins > 65 ? 0.26 : 0.38;
+            winIncrease = random.Next(4, 7);
+            winChanceAdjustment = 0.3;
         }
         else if (ovrPlayer > 90)
         {
-            winIncrease = random.Next(0, 5);
-            winChanceAdjustment = wins > 65 ? 0.22 : 0.32;
+            winIncrease = random.Next(3, 6);
+            winChanceAdjustment = 0.25;
         }
         else if (ovrPlayer > 85)
         {
-            winIncrease = random.Next(0, 4);
-            winChanceAdjustment = wins > 65 ? 0.14 : 0.26;
+            winIncrease = random.Next(2, 5);
+            winChanceAdjustment = 0.2;
+        }
+        else if (ovrPlayer > 80)
+        {
+            winIncrease = random.Next(1, 4);
+            winChanceAdjustment = 0.15;
+        }
+        else
+        {
+            winIncrease = random.Next(0, 3);
+            winChanceAdjustment = 0.1;
         }
 
         wins += winIncrease;
+
+        teamPosition = (int)((1 - winChanceAdjustment) * (wins / 82.0) * 15);
+        teamPosition = Math.Max(1, Math.Min(teamPosition, 15));
+
+        if (teamPosition > oldTeamPosition)
+        {
+            wins += random.Next(0, 8);
+        }
+
+        wins = Math.Min(wins, 78);
+
+        if (ovrPlayer > 90 && wins < 30)
+        {
+            wins += random.Next(13, 33);
+        }
+
         loses = 82 - wins;
+
 
         if (wins >= 67)
         {
@@ -702,6 +763,8 @@ class Program
             seasonCondition = 3;
             condRegularSeason = $"O {playerTeam} obteve uma seed de {wins} W - {loses} L no {TeamConference}, ficando em {teamPosition}º e não classificando para a pós-temporada.";
         }
+
+        oldTeamPosition = teamPosition;
     }
 
     public static void RegularSeasonStats(ref int ovrPlayer, ref int regularSeasonGamesPlayed, ref int regularSeasonPPG, ref int regularSeasonRPG, ref int regularSeasonAPG, int totalMediaStats, int playerAge, string playerPosition)
@@ -790,7 +853,7 @@ class Program
                 regularSeasonAPG = oldAPG - 2;
             }
         }
-        if (random.NextDouble() < 0.5)
+        if (random.NextDouble() < 0.5 && playerAge < 32)
         {
             switch (playerPosition)
             {
@@ -810,18 +873,18 @@ class Program
                     regularSeasonPPG += random.Next(0, 2);
                     break;
                 case "PF":
-                    regularSeasonRPG += random.Next(0, 3);
-                    if (regularSeasonAPG >= 6)
-                    {
-                        regularSeasonAPG -= random.Next(0, 2);
-                    }  
-                    break;
-                case "C":
                     regularSeasonRPG += random.Next(0, 4);
                     if (regularSeasonAPG >= 6)
                     {
+                        regularSeasonAPG -= random.Next(0, 2);
+                    }
+                    break;
+                case "C":
+                    regularSeasonRPG += random.Next(0, 5);
+                    if (regularSeasonAPG >= 6)
+                    {
                         regularSeasonAPG -= random.Next(0, 3);
-                    }                    
+                    }
                     break;
             }
         }
@@ -847,6 +910,15 @@ class Program
             {
                 ovrPlayer += random.Next(1, 6);
             }
+
+            if (playerAge <= 23 & ovrPlayer < 92)
+            {
+                ovrPlayer += random.Next(0, 4);
+                regularSeasonPPG += random.Next(-1, 6);
+                regularSeasonRPG += random.Next(0, 3);
+                regularSeasonAPG += random.Next(0, 3);
+            }
+
         }
         else
         {
@@ -858,20 +930,24 @@ class Program
             ovrPlayer -= random.Next(0, 3);
         }
 
-        if (playerAge <= 22)
+        if (ovrPlayer < 88)
         {
-            ovrPlayer += random.Next(0, 2);
+            if (playerAge <= 24)
+            {
+                ovrPlayer += random.Next(0, 3);
+            }
         }
+
     }
 
-    public static bool MVP(int ovrPlayer, int totalMediaStats, int regularSeasonGamesPlayed)
+    public static bool MVP(int ovrPlayer, int totalMediaStats, int regularSeasonGamesPlayed, int seasonCondition)
     {
         Random random = new Random();
         int numberMVP = random.Next(0, 10);
 
         bool mvpWin = false;
 
-        if (ovrPlayer > 84 && totalMediaStats > 39 && regularSeasonGamesPlayed > 58 && numberMVP >= 7)
+        if (ovrPlayer > 84 && totalMediaStats > 39 && regularSeasonGamesPlayed > 58 && numberMVP >= 7 && seasonCondition != 3)
         {
             mvpWin = true;
         }
@@ -1412,66 +1488,57 @@ class Program
 
         if (seasonCondition != 3)
         {
-            if (ovrPlayer > 95)
+            int pointsVariationPositive, pointsVariationNegative;
+            int reboundsVariationPositive, reboundsVariationNegative;
+            int assistsVariationPositive, assistsVariationNegative;
+
+            if (ovrPlayer < 80)
             {
-                offsP = random.Next(Math.Max(23, 0), Math.Min(33 + 3, 50));
-                offsR = random.Next(Math.Max(5, 0), Math.Min(9 + 3, 20));
-                offsA = random.Next(Math.Max(5, 0), Math.Min(9 + 3, 20));
+                pointsVariationPositive = 3; pointsVariationNegative = 5;
+                reboundsVariationPositive = 2; reboundsVariationNegative = 4;
+                assistsVariationPositive = 2; assistsVariationNegative = 4;
             }
-            else if (ovrPlayer > 90)
+            else if (ovrPlayer < 86)
             {
-                offsP = random.Next(Math.Max(21, 0), Math.Min(30 + 3, 50));
-                offsR = random.Next(Math.Max(5, 0), Math.Min(7 + 3, 20));
-                offsA = random.Next(Math.Max(5, 0), Math.Min(7 + 3, 20));
+                pointsVariationPositive = 4; pointsVariationNegative = 4;
+                reboundsVariationPositive = 2; reboundsVariationNegative = 3;
+                assistsVariationPositive = 2; assistsVariationNegative = 3;
             }
-            else if (ovrPlayer > 86)
+            else if (ovrPlayer < 92)
             {
-                offsP = random.Next(Math.Max(18, 0), Math.Min(28 + 3, 50));
-                offsR = random.Next(Math.Max(4, 0), Math.Min(7 + 3, 20));
-                offsA = random.Next(Math.Max(4, 0), Math.Min(7 + 3, 20));
-            }
-            else if (ovrPlayer > 82)
-            {
-                offsP = random.Next(Math.Max(17, 0), Math.Min(25 + 3, 50));
-                offsR = random.Next(Math.Max(3, 0), Math.Min(6 + 3, 20));
-                offsA = random.Next(Math.Max(4, 0), Math.Min(6 + 3, 20));
-            }
-            else if (ovrPlayer > 79)
-            {
-                offsP = random.Next(Math.Max(14, 0), Math.Min(19 + 3, 50));
-                offsR = random.Next(Math.Max(2, 0), Math.Min(5 + 3, 20));
-                offsA = random.Next(Math.Max(3, 0), Math.Min(5 + 3, 20));
-            }
-            else if (ovrPlayer > 74)
-            {
-                offsP = random.Next(Math.Max(11, 0), Math.Min(17 + 3, 50));
-                offsR = random.Next(Math.Max(2, 0), Math.Min(4 + 3, 20));
-                offsA = random.Next(Math.Max(3, 0), Math.Min(4 + 3, 20));
+                pointsVariationPositive = 5; pointsVariationNegative = 4;
+                reboundsVariationPositive = 3; reboundsVariationNegative = 2;
+                assistsVariationPositive = 3; assistsVariationNegative = 2;
             }
             else
             {
-                offsP = random.Next(Math.Max(9, 0), Math.Min(15 + 3, 50));
-                offsR = random.Next(Math.Max(2, 0), Math.Min(4 + 3, 20));
-                offsA = random.Next(Math.Max(3, 0), Math.Min(4 + 3, 20));
+                pointsVariationPositive = 5; pointsVariationNegative = 3;
+                reboundsVariationPositive = 2; reboundsVariationNegative = 1;
+                assistsVariationPositive = 2; assistsVariationNegative = 1;
             }
 
-            if (playerPosition == "PG" && random.NextDouble() < 0.5)
+            offsP = regularSeasonPPG + random.Next(-pointsVariationNegative, pointsVariationPositive + 1);
+            offsR = regularSeasonRPG + random.Next(-reboundsVariationNegative, reboundsVariationPositive + 1);
+            offsA = regularSeasonAPG + random.Next(-assistsVariationNegative, assistsVariationPositive + 1);
+
+            offsP = Math.Max(offsP, 18);
+            offsR = Math.Max(offsR, 4);
+            offsA = Math.Max(offsA, 4);
+
+            if (playerPosition == "PG" && random.NextDouble() < 0.20)
             {
                 offsA += random.Next(0, 4);
-                offsP -= random.Next(0, 3);
-                offsR -= random.Next(0, 3);
+                offsP -= random.Next(0, 2);
             }
-            else if ((playerPosition == "SG" || playerPosition == "SF") && random.NextDouble() < 0.5)
+            else if ((playerPosition == "SG" || playerPosition == "SF") && random.NextDouble() < 0.20)
             {
                 offsP += random.Next(0, 4);
-                offsR -= random.Next(0, 3);
-                offsA -= random.Next(0, 3);
             }
-            else if ((playerPosition == "PF" || playerPosition == "C") && random.NextDouble() < 0.5)
+            else if ((playerPosition == "PF" || playerPosition == "C") && random.NextDouble() < 0.20)
             {
                 offsR += random.Next(0, 4);
                 offsP += random.Next(0, 2);
-                offsA -= random.Next(0, 4);
+                offsA -= random.Next(0, 2);
             }
 
             Console.WriteLine(" ");
