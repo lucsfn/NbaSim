@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Isaias\\Desktop\\ATP\\nbaSim\\nbaSim.csproj": {}
+    "C:\\Users\\Isaias\\Desktop\\ATP\\NbaSim\\nbaSim.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Isaias\\Desktop\\ATP\\nbaSim\\nbaSim.csproj": {
+    "C:\\Users\\Isaias\\Desktop\\ATP\\NbaSim\\nbaSim.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Isaias\\Desktop\\ATP\\nbaSim\\nbaSim.csproj",
+        "projectUniqueName": "C:\\Users\\Isaias\\Desktop\\ATP\\NbaSim\\nbaSim.csproj",
         "projectName": "nbaSim",
-        "projectPath": "C:\\Users\\Isaias\\Desktop\\ATP\\nbaSim\\nbaSim.csproj",
+        "projectPath": "C:\\Users\\Isaias\\Desktop\\ATP\\NbaSim\\nbaSim.csproj",
         "packagesPath": "C:\\Users\\Isaias\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Isaias\\Desktop\\ATP\\nbaSim\\obj\\",
+        "outputPath": "C:\\Users\\Isaias\\Desktop\\ATP\\NbaSim\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
