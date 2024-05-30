@@ -221,6 +221,9 @@ class Program
         do
         {
             Console.Clear();
+            Console.WriteLine(" ");
+            Console.WriteLine("==============================================================================");
+            Console.WriteLine(" ");
             Console.WriteLine($"Vamos para a sua {seasonCount}º temporada!");
             Console.WriteLine(" ");
             Console.WriteLine("==============================================================================");
@@ -300,6 +303,7 @@ class Program
                 Console.WriteLine(" ");
                 Console.WriteLine("==============================================================================");
                 Console.WriteLine(" ");
+                Console.ReadLine();
                 break;
             }
 
@@ -308,11 +312,28 @@ class Program
             Console.WriteLine("==============================================================================");
             Console.WriteLine(" ");
             Console.WriteLine($"Deseja continuar a simulação? {playerName} está com {playerAge} anos, indo para sua {seasonCount}º temporada na liga.");
-            Console.WriteLine("Digite 'SIM' para continuar ou 'NAO' para encerrar a simulação.");
+            Console.WriteLine("Digite 'SIM' ou pressione Enter para continuar, digite 'NAO' para encerrar a simulação.");
             continueSim = Console.ReadLine()?.ToUpper() ?? string.Empty;
+            if (continueSim == "NAO")
+            {
+                continueSim = "NÃO";
+            }
 
             Console.Clear();
-        } while (continueSim == "SIM" && playerAge < 40);
+        } while (continueSim == "SIM" && playerAge < 40 || continueSim == string.Empty && playerAge < 40);
+
+        if (continueSim == "NÃO")
+        {
+            Console.WriteLine(" ");
+            Console.WriteLine("==============================================================================");
+            Console.WriteLine(" ");
+            Console.WriteLine($"A carreira de {playerName} chegou ao fim com {totalG} jogos ao longo de {seasonCount - 1} temporadas.\n{totalP} pontos\n{totalR} rebotes\n{totalA} assistências");
+            Console.WriteLine($"Além de conquistar {nbaChamp} títulos, {mvp} MVPs e {nbaFMVP} FMVPs!");
+            Console.WriteLine(" ");
+            Console.WriteLine("==============================================================================");
+            Console.WriteLine(" ");
+            Console.ReadLine();
+        }
 
     }
 
@@ -489,56 +510,58 @@ class Program
         }
 
         // Chance de melhorar estatísticas baseado na posição do jogador
-        if (playerPosition == "PG" && random.NextDouble() < 0.5)
+        if (playerPosition == "PG")
         {
-            regularSeasonAPG += random.Next(1, 3);
+            regularSeasonAPG += random.Next(0, 4);
             ovr += 1;
         }
-        else if (playerPosition == "SG" || playerPosition == "PF" && random.NextDouble() < 0.5)
+        else if (playerPosition == "SG" || playerPosition == "PF")
         {
-            regularSeasonPPG += random.Next(1, 3);
+            regularSeasonPPG += random.Next(0, 4);
             ovr += 1;
         }
-        else if (playerPosition == "PF" && random.NextDouble() < 0.5)
+        else if (playerPosition == "PF")
         {
-            regularSeasonPPG += random.Next(1, 3);
-            regularSeasonRPG += random.Next(1, 3);
+            regularSeasonPPG += random.Next(0, 3);
+            regularSeasonRPG += random.Next(0, 3);
             ovr += 1;
         }
-        else if (playerPosition == "C" && random.NextDouble() < 0.5)
+        else if (playerPosition == "C")
         {
-            regularSeasonRPG += random.Next(1, 3);
+            regularSeasonRPG += random.Next(0, 4);
             ovr += 1;
         }
 
         int ProbWinRoy = 0;
 
         // Verificar se o jogador é considerado "GOAT status"
-        if (random.Next(1, 16) == 1)
+        if (random.Next(1, 26) == 1)
         {
-            regularSeasonPPG += 3;
+            regularSeasonPPG += 4;
             regularSeasonRPG += 2;
             regularSeasonAPG += 2;
             ovr += 3;
             ProbWinRoy += 10;
         }
 
+        int regularTotal = regularSeasonPPG + regularSeasonRPG + regularSeasonAPG;
+
         // Calculando probabilidade de ganhar o ROY
-        if (teamRookieForce == 1 && regularSeasonGamesPlayed >= 58 && regularSeasonPPG >= 16)
+        if (teamRookieForce == 1 && regularSeasonGamesPlayed >= 58 && regularTotal >= 24)
         {
-            ProbWinRoy = random.Next(15, 55);
+            ProbWinRoy = random.Next(15, 85);
         }
-        else if (teamRookieForce == 2 && regularSeasonGamesPlayed >= 58 && regularSeasonPPG >= 17)
+        else if (teamRookieForce == 2 && regularSeasonGamesPlayed >= 58 && regularTotal >= 24)
         {
-            ProbWinRoy = random.Next(25, 70);
+            ProbWinRoy = random.Next(25, 85);
         }
-        else if (teamRookieForce == 3 && regularSeasonGamesPlayed >= 58 && regularSeasonPPG >= 18)
+        else if (teamRookieForce == 3 && regularSeasonGamesPlayed >= 58 && regularTotal >= 24)
         {
-            ProbWinRoy = random.Next(35, 80);
+            ProbWinRoy = random.Next(35, 85);
         }
 
         // Caso primeira escolha, as chances aumentam
-        if (pickDraft == 1)
+        if (pickDraft == 1 || regularTotal >= 25)
         {
             ProbWinRoy += random.Next(1, 16);
         }
@@ -654,7 +677,7 @@ class Program
 
         if (teamForce == 1)
         {
-            wins = random.Next(46, 73);
+            wins = random.Next(46, 63);
         }
         else if (teamForce == 2)
         {
@@ -678,12 +701,12 @@ class Program
 
         if (playerOVR > 95)
         {
-            winIncrease = random.Next(4, 7);
+            winIncrease = random.Next(2, 15);
             winChanceAdjustment = 0.3;
         }
         else if (playerOVR > 90)
         {
-            winIncrease = random.Next(3, 6);
+            winIncrease = random.Next(3, 8);
             winChanceAdjustment = 0.25;
         }
         else if (playerOVR > 85)
@@ -700,7 +723,7 @@ class Program
             teamPosition = Math.Max(1, Math.Min(teamPosition, 15));
         }
 
-        if (teamPosition < oldTeamPosition)
+        if (teamPosition < oldTeamPosition && wins < 66)
         {
             wins += random.Next(0, 6);
         }
@@ -864,7 +887,7 @@ class Program
                 case "PG":
                     if (regularSeasonAPG <= 10)
                     {
-                        regularSeasonAPG += random.Next(0, 3);
+                        regularSeasonAPG += random.Next(0, 4);
                         regularSeasonPPG -= random.Next(0, 2);
                     }
                     break;
@@ -940,29 +963,34 @@ class Program
             if (playerAge <= 23 && playerOVR <= 85)
             {
                 playerOVR += random.Next(0, 4);
-                regularSeasonPPG += random.Next(0, 3);
+                regularSeasonPPG += random.Next(0, 4);
                 regularSeasonRPG += random.Next(0, 3);
                 regularSeasonAPG += random.Next(0, 3);
             }
         }
-        else // Penalização no OVR por piora de stats
+        else if (playerAge >= 29) // Penalização no OVR por piora de stats
         {
             playerOVR -= random.Next(0, 3);
         }
 
         // Downgrade no overall por envelhecimento
-        if (playerAge >= 33)
+        
+        if (playerAge >= 36)
+        {
+            playerOVR -= random.Next(1, 5);
+        }
+        else if (playerAge >= 33)
         {
             playerOVR -= random.Next(0, 4);
         }
 
         // Suporte para jogadores que não estão evoluindo
-        if (playerAge >= 26 && playerOVR <= 86)
+        if (playerAge <= 26 && playerOVR <= 86)
         {
-            playerOVR += random.Next(1,3);
-            regularSeasonPPG += random.Next(1,3);
-            regularSeasonRPG += random.Next(1,3);
-            regularSeasonAPG += random.Next(1,3);      
+            playerOVR += random.Next(0, 3);
+            regularSeasonPPG += random.Next(0, 3);
+            regularSeasonRPG += random.Next(0, 3);
+            regularSeasonAPG += random.Next(0, 3);
         }
     }
 
@@ -971,10 +999,19 @@ class Program
     {
         Random random = new Random();
         int numberMVP = random.Next(0, 10);
+        
+        if (totalRSMediaStats >= 50)
+        {
+            numberMVP += 4;
+        }
+        else if (totalRSMediaStats >= 45)
+        {
+            numberMVP += 2;
+        }
 
         bool mvpWin = false;
 
-        if (playerOVR > 84 && totalRSMediaStats > 39 && regularSeasonGamesPlayed > 58 && numberMVP >= 7 && seasonCondition != 3)
+        if (playerOVR >= 88 && totalRSMediaStats > 39 && regularSeasonGamesPlayed > 58 && numberMVP >= 7 && seasonCondition != 3)
         {
             mvpWin = true;
         }
@@ -996,29 +1033,29 @@ class Program
             loses = 0;
 
         bool FMVPwin = false;
-        int chanceToWinFVMP = random.Next(0, 4);
+        int chanceToWinFVMP = random.Next(0, 3);
         double winChanceAdjustment = 0;
 
         if (teamConference == "Leste")
         {
             if (playerOVR > 95 || teamPosition >= 3)
             {
-                winChanceAdjustment = 0.72;
+                winChanceAdjustment = 0.60;
             }
             else if (playerOVR > 90)
             {
-                winChanceAdjustment = 0.48;
+                winChanceAdjustment = 0.30;
             }
             else if (playerOVR > 86)
             {
-                winChanceAdjustment = 0.25;
+                winChanceAdjustment = 0.15;
             }
 
             if (seasonCondition == 1) // Playoffs direto
             {
                 do
                 {
-                firstRoundTeam = easternNbaTeams[random.Next(0, 15)];
+                    firstRoundTeam = easternNbaTeams[random.Next(0, 15)];
                 } while (firstRoundTeam == playerTeam);
 
                 wins = random.Next(1, 5);
@@ -1260,15 +1297,15 @@ class Program
 
             if (playerOVR > 95 || teamPosition >= 3)
             {
-                winChanceAdjustment = 0.65;
+                winChanceAdjustment = 0.60;
             }
             else if (playerOVR > 90)
             {
-                winChanceAdjustment = 0.48;
+                winChanceAdjustment = 0.30;
             }
             else if (playerOVR > 86)
             {
-                winChanceAdjustment = 0.25;
+                winChanceAdjustment = 0.15;
             }
             if (seasonCondition == 1) // Playoffs direto
             {
@@ -1612,18 +1649,15 @@ class Program
         Console.WriteLine(" ");
         Console.WriteLine("==============================================================================");
         Console.WriteLine(" ");
-        Console.WriteLine($"Seu contrato com o {playerTeam} acabou. Você recebeu uma proposta de extensão por 3 anos, deseja continuar?\nResponda com sim ou não");
+        Console.WriteLine($"Seu contrato com o {playerTeam} acabou. Você recebeu uma proposta de extensão com contrato máximo por 3 anos, deseja renovar?\nResponda com 'SIM' ou pressione Enter ou 'NÃO'");
         Console.WriteLine(" ");
 
-        do
-        {
             resposta = Console.ReadLine()?.ToUpper() ?? string.Empty;
 
             if (resposta == "NAO")
             {
                 resposta = "NÃO";
             }
-        } while (resposta != "SIM" && resposta != "NÃO");
 
         if (resposta == "NÃO")
         {
