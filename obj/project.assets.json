@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Isaias\\Desktop\\ATP\\NbaSim\\nbaSim.csproj",
+      "projectUniqueName": "c:\\Users\\Isaias\\Desktop\\ATP\\NbaSim\\nbaSim.csproj",
       "projectName": "nbaSim",
-      "projectPath": "C:\\Users\\Isaias\\Desktop\\ATP\\NbaSim\\nbaSim.csproj",
+      "projectPath": "c:\\Users\\Isaias\\Desktop\\ATP\\NbaSim\\nbaSim.csproj",
       "packagesPath": "C:\\Users\\Isaias\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Isaias\\Desktop\\ATP\\NbaSim\\obj\\",
+      "outputPath": "c:\\Users\\Isaias\\Desktop\\ATP\\NbaSim\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

@@ -1,6 +1,6 @@
 ﻿using System;
 
-class Program
+class NbaSim
 {
     public static void Main(string[] args)
     {
