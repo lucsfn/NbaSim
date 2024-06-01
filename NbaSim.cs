@@ -110,7 +110,7 @@ class NbaSim
 
         // Chamando a função draft e estabelecendo o time inicial do jogador
         string draftInfos = Draft(ref pickDraft, ref playerPosition, ref nbaTeamSelected, allNbaTeams, playerName);
-        string TeamConference = Conference(nbaTeamSelected, easternNbaTeams, westernNbaTeams);
+        string teamConference = Conference(nbaTeamSelected, easternNbaTeams, westernNbaTeams);
         string playerTeam = nbaTeamSelected;
 
         Console.WriteLine(draftInfos);
@@ -120,7 +120,7 @@ class NbaSim
         Console.WriteLine(" ");
 
         // Função para determinar a conferência do time
-        string teamConference = Conference(nbaTeamSelected, easternNbaTeams, westernNbaTeams);
+        teamConference = Conference(nbaTeamSelected, easternNbaTeams, westernNbaTeams);
 
         // Função para saber a força do time baseado na classificação da Temporada Regular 23/24
         int teamRookieForce = TeamForce(nbaTeamSelected);
@@ -161,7 +161,7 @@ class NbaSim
         string condRookie = string.Empty;
         int seasonCondition = 0;
 
-        TeamSeedRookie(nbaTeamSelected, teamRookieForce, ref condRookie, ref seasonCondition, ref TeamConference);
+        TeamSeedRookie(nbaTeamSelected, teamRookieForce, ref condRookie, ref seasonCondition, ref teamConference);
 
         Console.WriteLine(condRookie);
         Console.WriteLine(" ");
@@ -176,11 +176,12 @@ class NbaSim
             totalRSMediaStats = 0;
 
         int teamPosition = 0;
+        int winsRegularSeason = 0;
 
         RegularSeasonTotalStats(regularSeasonGamesPlayed, regularSeasonPPG, regularSeasonRPG, regularSeasonAPG, ref totalP, ref totalR, ref totalA, ref totalRSMediaStats, ref totalG);
 
         // Cálculo OVR Rookie
-        int playerOVR = OvrRookie(totalRSMediaStats, ref ovr);
+        int playerOVR = OvrRookie(totalRSMediaStats, ref ovr, goatStatus);
 
         Console.WriteLine($"{playerName} teve um overral de {playerOVR} ao final da temporada regular!");
         Console.WriteLine(" ");
@@ -201,7 +202,7 @@ class NbaSim
             Console.ReadLine();
 
             // Simulação dos Playoffs no Rookie year
-            PlayoffsSim(seasonCondition, easternNbaTeams, westernNbaTeams, teamConference, playerTeam, ref nbaChamp, ref nbaFMVP, playerOVR, teamPosition, playerName, goatStatus, playerAge);
+            PlayoffsSim(seasonCondition, easternNbaTeams, westernNbaTeams, teamConference, playerTeam, ref nbaChamp, ref nbaFMVP, playerOVR, teamPosition, playerName, goatStatus, playerAge, winsRegularSeason);
 
             // Stats nos Playoffs no Rookie year
             PlayoffsPerfomance(ref offsP, ref offsR, ref offsA, ref playerOVR, ref condOffs, playerName, seasonCondition, playerPosition, regularSeasonPPG, regularSeasonRPG, regularSeasonAPG, totalRSMediaStats, goatStatus);
@@ -237,7 +238,7 @@ class NbaSim
             RegularSeasonTotalStats(regularSeasonGamesPlayed, regularSeasonPPG, regularSeasonRPG, regularSeasonAPG, ref totalP, ref totalR, ref totalA, ref totalRSMediaStats, ref totalG);
 
             // Saber se o jogador ganhou ou não o MVP
-            bool winMVP = MVP(playerOVR, totalRSMediaStats, regularSeasonGamesPlayed, seasonCondition);
+            bool winMVP = MVP(playerOVR, totalRSMediaStats, regularSeasonGamesPlayed, seasonCondition, goatStatus);
 
             // Imprimindo stats e OVR da Temporada Regular
             Console.WriteLine($"O jogador {playerName} jogou {regularSeasonGamesPlayed} jogos na sua {seasonCount}º temporada e obteve as seguintes médias:");
@@ -263,7 +264,7 @@ class NbaSim
             int oldTeamPosition = random.Next(6, 16);
 
             // Simulando e imrpimindo a temporada regular
-            TeamSeed(playerTeam, teamForce, ref condRegularSeason, ref seasonCondition, ref TeamConference, playerOVR, ref teamPosition, ref oldTeamPosition, goatStatus);
+            TeamSeed(playerTeam, teamForce, ref condRegularSeason, ref seasonCondition, ref teamConference, playerOVR, ref teamPosition, ref oldTeamPosition, goatStatus, ref winsRegularSeason);
 
             // Imrpimindo a perfomance de temporada regular
             Console.WriteLine(condRegularSeason);
@@ -278,7 +279,7 @@ class NbaSim
                 Console.ReadLine();
 
                 // Simulação dos Playoffs
-                PlayoffsSim(seasonCondition, easternNbaTeams, westernNbaTeams, teamConference, playerTeam, ref nbaChamp, ref nbaFMVP, playerOVR, teamPosition, playerName, goatStatus, playerAge);
+                PlayoffsSim(seasonCondition, easternNbaTeams, westernNbaTeams, teamConference, playerTeam, ref nbaChamp, ref nbaFMVP, playerOVR, teamPosition, playerName, goatStatus, playerAge, winsRegularSeason);
 
                 // Stats nos Playoffs
                 PlayoffsPerfomance(ref offsP, ref offsR, ref offsA, ref playerOVR, ref condOffs, playerName, seasonCondition, playerPosition, regularSeasonPPG, regularSeasonRPG, regularSeasonAPG, totalRSMediaStats, goatStatus);
@@ -293,8 +294,8 @@ class NbaSim
                 FreeAgency(ref playerTeam, allNbaTeams, easternNbaTeams, westernNbaTeams, ref teamConference, ref teamForce);
             }
 
-            // Verifica se a idade do jogador é maior que 40 para encerrar o programa
-            if (playerAge == 40)
+            // Verifica se a idade do jogador é maior que 38 para encerrar o programa
+            if (playerAge == 38)
             {
                 Console.Clear();
                 Console.WriteLine(" ");
@@ -322,7 +323,7 @@ class NbaSim
             }
 
             Console.Clear();
-        } while (continueSim == "SIM" && playerAge < 40 || continueSim == string.Empty && playerAge < 40);
+        } while (continueSim == "SIM" && playerAge < 38 || continueSim == string.Empty && playerAge < 38);
 
         if (continueSim == "NÃO")
         {
@@ -539,13 +540,9 @@ class NbaSim
         goatStatus = false;
 
         // Verificar se o jogador é considerado "GOAT status"
-        if (random.Next(1, 26) == 1)
+        if (random.Next(1, 11) == 1)
         {
             regularSeasonPPG += 4;
-            regularSeasonRPG += 2;
-            regularSeasonAPG += 2;
-            ovr += 3;
-            ProbWinRoy += 10;
             goatStatus = true;
         }
 
@@ -575,10 +572,15 @@ class NbaSim
         {
             winRoy = true;
         }
+
+        if (goatStatus)
+        {
+            winRoy = true;
+        }
     }
 
     // Simular a seed do Rookie Year
-    public static void TeamSeedRookie(string nbaTeamSelected, int teamRookieForce, ref string condRookie, ref int seasonCondition, ref string TeamConference)
+    public static void TeamSeedRookie(string nbaTeamSelected, int teamRookieForce, ref string condRookie, ref int seasonCondition, ref string teamConference)
     {
         Random random = new Random();
 
@@ -608,31 +610,31 @@ class NbaSim
         {
             teamPosition = random.Next(1, 4);
             seasonCondition = 1;
-            condRookie = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L e classificou para os playoffs em {teamPosition}º no {TeamConference}!";
+            condRookie = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L e classificou para os playoffs em {teamPosition}º no {teamConference}!";
         }
         else if (wins <= 55 && wins >= 48)
         {
             teamPosition = random.Next(4, 7);
             seasonCondition = 1;
-            condRookie = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L e classificou para os playoffs em {teamPosition}º no {TeamConference}!";
+            condRookie = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L e classificou para os playoffs em {teamPosition}º no {teamConference}!";
         }
         else if (wins <= 47 && wins >= 41)
         {
             teamPosition = random.Next(7, 9);
             seasonCondition = 2;
-            condRookie = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L e classificou para o play-in em {teamPosition}º no {TeamConference}!";
+            condRookie = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L e classificou para o play-in em {teamPosition}º no {teamConference}!";
         }
         else if (wins <= 41 && wins >= 32)
         {
             teamPosition = random.Next(10, 13);
             seasonCondition = 3;
-            condRookie = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L no {TeamConference}, ficando em {teamPosition}º e não classificando para a pós-temporada.";
+            condRookie = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L no {teamConference}, ficando em {teamPosition}º e não classificando para a pós-temporada.";
         }
         else
         {
             teamPosition = random.Next(13, 16);
             seasonCondition = 3;
-            condRookie = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L no {TeamConference}, ficando em {teamPosition}º e não classificando para a pós-temporada.";
+            condRookie = $"O {nbaTeamSelected} obteve uma seed de {wins} W - {loses} L no {teamConference}, ficando em {teamPosition}º e não classificando para a pós-temporada.";
         }
     }
 
@@ -648,7 +650,7 @@ class NbaSim
     }
 
     // Simular o Overall de rookie
-    public static int OvrRookie(int totalRSMediaStats, ref int ovr)
+    public static int OvrRookie(int totalRSMediaStats, ref int ovr, bool goatStatus)
     {
 
         Random random = new Random();
@@ -666,11 +668,16 @@ class NbaSim
             ovr = random.Next(73, 79);
         }
 
+        if (goatStatus)
+        {
+            ovr += 6;
+        }
+
         return ovr;
     }
 
     // Simular a seed
-    public static void TeamSeed(string playerTeam, int teamForce, ref string condRegularSeason, ref int seasonCondition, ref string TeamConference, int playerOVR, ref int teamPosition, ref int oldTeamPosition, bool goatStaus)
+    public static void TeamSeed(string playerTeam, int teamForce, ref string condRegularSeason, ref int seasonCondition, ref string teamConference, int playerOVR, ref int teamPosition, ref int oldTeamPosition, bool goatStaus, ref int winsRegularSeason)
     {
         Random random = new Random();
 
@@ -746,52 +753,53 @@ class NbaSim
         {
             teamPosition = 1;
             seasonCondition = 1;
-            condRegularSeason = $"O {playerTeam} obteve uma seed de {wins} W - {loses} L e classificou para os playoffs em {teamPosition}º no {TeamConference}!";
+            condRegularSeason = $"O {playerTeam} obteve uma seed de {wins} W - {loses} L e classificou para os playoffs em {teamPosition}º no {teamConference}!";
         }
         else if (wins >= 63)
         {
             teamPosition = random.Next(1, 3);
             seasonCondition = 1;
-            condRegularSeason = $"O {playerTeam} obteve uma seed de {wins} W - {loses} L e classificou para os playoffs em {teamPosition}º no {TeamConference}!";
+            condRegularSeason = $"O {playerTeam} obteve uma seed de {wins} W - {loses} L e classificou para os playoffs em {teamPosition}º no {teamConference}!";
         }
         else if (wins >= 56)
         {
             teamPosition = random.Next(1, 4);
             seasonCondition = 1;
-            condRegularSeason = $"O {playerTeam} obteve uma seed de {wins} W - {loses} L e classificou para os playoffs em {teamPosition}º no {TeamConference}!";
+            condRegularSeason = $"O {playerTeam} obteve uma seed de {wins} W - {loses} L e classificou para os playoffs em {teamPosition}º no {teamConference}!";
         }
         else if (wins >= 48)
         {
             teamPosition = random.Next(4, 7);
             seasonCondition = 1;
-            condRegularSeason = $"O {playerTeam} obteve uma seed de {wins} W - {loses} L e classificou para os playoffs em {teamPosition}º no {TeamConference}!";
+            condRegularSeason = $"O {playerTeam} obteve uma seed de {wins} W - {loses} L e classificou para os playoffs em {teamPosition}º no {teamConference}!";
         }
         else if (wins >= 41)
         {
             teamPosition = random.Next(7, 9);
             seasonCondition = 2;
-            condRegularSeason = $"O {playerTeam} obteve uma seed de {wins} W - {loses} L e classificou para o play-in em {teamPosition}º no {TeamConference}!";
+            condRegularSeason = $"O {playerTeam} obteve uma seed de {wins} W - {loses} L e classificou para o play-in em {teamPosition}º no {teamConference}!";
         }
         else if (wins >= 35)
         {
             teamPosition = random.Next(11, 13);
             seasonCondition = 3;
-            condRegularSeason = $"O {playerTeam} obteve uma seed de {wins} W - {loses} L no {TeamConference}, ficando em {teamPosition}º e não classificando para a pós-temporada.";
+            condRegularSeason = $"O {playerTeam} obteve uma seed de {wins} W - {loses} L no {teamConference}, ficando em {teamPosition}º e não classificando para a pós-temporada.";
         }
         else if (wins >= 30)
         {
             teamPosition = random.Next(13, 15);
             seasonCondition = 3;
-            condRegularSeason = $"O {playerTeam} obteve uma seed de {wins} W - {loses} L no {TeamConference}, ficando em {teamPosition}º e não classificando para a pós-temporada.";
+            condRegularSeason = $"O {playerTeam} obteve uma seed de {wins} W - {loses} L no {teamConference}, ficando em {teamPosition}º e não classificando para a pós-temporada.";
         }
         else
         {
             teamPosition = random.Next(14, 16);
             seasonCondition = 3;
-            condRegularSeason = $"O {playerTeam} obteve uma seed de {wins} W - {loses} L no {TeamConference}, ficando em {teamPosition}º e não classificando para a pós-temporada.";
+            condRegularSeason = $"O {playerTeam} obteve uma seed de {wins} W - {loses} L no {teamConference}, ficando em {teamPosition}º e não classificando para a pós-temporada.";
         }
 
         oldTeamPosition = teamPosition;
+        wins = winsRegularSeason;
     }
 
     // Simular os stats da temporada regular e calcular o ovr com base neles
@@ -898,7 +906,7 @@ class NbaSim
                     if (regularSeasonAPG <= 10)
                     {
                         regularSeasonAPG += random.Next(0, 4);
-                        regularSeasonPPG -= random.Next(0, 2);
+                        regularSeasonRPG -= random.Next(0, 2);
                     }
                     break;
                 case "SG":
@@ -932,7 +940,7 @@ class NbaSim
                 case "C":
                     if (regularSeasonRPG <= 8)
                     {
-                        regularSeasonRPG += random.Next(0, 3);
+                        regularSeasonRPG += random.Next(0, 5);
                         if (regularSeasonAPG >= 6)
                         {
                             regularSeasonAPG -= random.Next(0, 3);
@@ -1004,18 +1012,23 @@ class NbaSim
         }
 
         // GOAT status
-        if (goatStatus && playerAge <= 30 && regularSeasonPPG <= 34)
+        if (goatStatus && playerAge <= 28)
         {
             regularSeasonPPG += random.Next(0, 3);
-            playerOVR += random.Next(0, 2);
+            playerOVR += random.Next(0, 4);
         }
     }
 
     // Verificar se o ojogador ganhou ou não o MVP
-    public static bool MVP(int playerOVR, int totalRSMediaStats, int regularSeasonGamesPlayed, int seasonCondition)
+    public static bool MVP(int playerOVR, int totalRSMediaStats, int regularSeasonGamesPlayed, int seasonCondition, bool goatStatus)
     {
         Random random = new Random();
         int numberMVP = random.Next(0, 10);
+
+        if (goatStatus)
+        {
+            numberMVP++;
+        }
 
         if (totalRSMediaStats >= 50)
         {
@@ -1028,7 +1041,7 @@ class NbaSim
 
         bool mvpWin = false;
 
-        if (playerOVR >= 88 && totalRSMediaStats > 39 && regularSeasonGamesPlayed > 58 && numberMVP >= 7 && seasonCondition != 3)
+        if (playerOVR >= 87 && totalRSMediaStats > 39 && regularSeasonGamesPlayed > 58 && numberMVP >= 7 && seasonCondition != 3)
         {
             mvpWin = true;
         }
@@ -1037,7 +1050,7 @@ class NbaSim
     }
 
     // Simular os playoffs
-    public static void PlayoffsSim(int seasonCondition, string[] easternNbaTeams, string[] westernNbaTeams, string teamConference, string playerTeam, ref int nbaChamp, ref int nbaFMVP, int playerOVR, int teamPosition, string playerName, bool goatStatus, int playerAge)
+    public static void PlayoffsSim(int seasonCondition, string[] easternNbaTeams, string[] westernNbaTeams, string teamConference, string playerTeam, ref int nbaChamp, ref int nbaFMVP, int playerOVR, int teamPosition, string playerName, bool goatStatus, int playerAge, int winsRegularSeason)
     {
         Random random = new Random();
         string playInTeam = string.Empty,
@@ -1053,12 +1066,17 @@ class NbaSim
         int chanceToWinFVMP = random.Next(0, 3);
         double winChanceAdjustment = 0;
 
+        if (winsRegularSeason >= 60)
+        {
+            winChanceAdjustment += 0.03;
+        }
+
         // GOAT Status
         if (goatStatus && playerAge <= 32)
         {
             winChanceAdjustment += 0.04;
         }
-        
+
         if (goatStatus)
         {
             chanceToWinFVMP = random.Next(0, 2);
@@ -1068,15 +1086,15 @@ class NbaSim
         {
             if (playerOVR > 95 || teamPosition >= 3)
             {
-                winChanceAdjustment = 0.60;
+                winChanceAdjustment += 0.60;
             }
             else if (playerOVR > 90)
             {
-                winChanceAdjustment = 0.30;
+                winChanceAdjustment += 0.30;
             }
             else if (playerOVR > 86)
             {
-                winChanceAdjustment = 0.15;
+                winChanceAdjustment += 0.15;
             }
 
             if (seasonCondition == 1) // Playoffs direto
@@ -1151,7 +1169,11 @@ class NbaSim
                                 loses = random.Next(0, 4);
                                 Console.WriteLine($"O {playerTeam} enfrentou o {finalTeam} nas finais da NBA e ganhou por {wins} - {loses}!");
                                 nbaChamp++;
-                                if (chanceToWinFVMP != 0)
+                                if (goatStatus)
+                                {
+                                    FMVPwin = true;
+                                }
+                                else if (chanceToWinFVMP != 0)
                                 {
                                     Console.WriteLine($"Além disso, {playerName} foi coroado o FMVP!");
                                     Console.WriteLine(" ");
@@ -1278,7 +1300,11 @@ class NbaSim
                                     loses = random.Next(0, 4);
                                     Console.WriteLine($"O {playerTeam} enfrentou o {finalTeam} nas finais da NBA e ganhou por {wins} - {loses}!");
                                     nbaChamp++;
-                                    if (chanceToWinFVMP != 0)
+                                    if (goatStatus)
+                                    {
+                                        FMVPwin = true;
+                                    }
+                                    else if (chanceToWinFVMP != 0)
                                     {
                                         Console.WriteLine($"Além disso, {playerName} foi coroado o FMVP!");
                                         Console.WriteLine(" ");
@@ -1325,16 +1351,17 @@ class NbaSim
 
             if (playerOVR > 95 || teamPosition >= 3)
             {
-                winChanceAdjustment = 0.60;
+                winChanceAdjustment += 0.60;
             }
             else if (playerOVR > 90)
             {
-                winChanceAdjustment = 0.30;
+                winChanceAdjustment += 0.30;
             }
             else if (playerOVR > 86)
             {
-                winChanceAdjustment = 0.15;
+                winChanceAdjustment += 0.15;
             }
+
             if (seasonCondition == 1) // Playoffs direto
             {
                 do

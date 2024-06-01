@@ -1,0 +1,5 @@
+C:\Users\Isaias\Desktop\workspace\ATP\NbaSim\build\nbaSim.exe
+C:\Users\Isaias\Desktop\workspace\ATP\NbaSim\build\nbaSim.dll
+C:\Users\Isaias\Desktop\workspace\ATP\NbaSim\build\nbaSim.deps.json
+C:\Users\Isaias\Desktop\workspace\ATP\NbaSim\build\nbaSim.runtimeconfig.json
+C:\Users\Isaias\Desktop\workspace\ATP\NbaSim\build\nbaSim.pdb
