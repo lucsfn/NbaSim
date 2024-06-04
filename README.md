@@ -1,8 +1,8 @@
 Funções que precisarão serem implementadas:
 
-1- Função de nome do jogador, [PlayerName]
+1- Função de nome do jogador, [PlayerName] OK
 2- Função de posição do jogador, [PlayerPosition]
-3- Função de espaçamento no chat, [SpaceLines]
+3- Função de espaçamento no chat, [SpaceLines] OK
 4- Função de Draft do Time, [TeamDraft] (pick + time que escolheu)
 5- Função de OVR como rookie, [RookieOverall]
 6- Função de GOAT, [GoatStatus] (incremento no overall)
