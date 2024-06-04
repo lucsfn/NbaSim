@@ -4,9 +4,10 @@ class NbaSim
 {
     public static void Main(string[] args)
     {
-        // Variáveis que serão utilizadas
+        // Variáveis do Player
         string playerName = PlayerName();
         string playerPosition = PlayerPosition();
+        int playerPick = PlayerPick();
     }
 
     public static void SpaceLines()
@@ -58,6 +59,15 @@ class NbaSim
         } while (!pos.Contains(position));
         
         return position;
+    }
+
+    public static int PlayerPick()
+    {
+        Random random = new Random();
+
+        int pick = random.Next(1, 31);
+
+        return pick;
     }
 
 }
