@@ -4,11 +4,6 @@ class NbaSim
 {
     public static void Main(string[] args)
     {
-        // Variáveis do Player
-        string playerName = PlayerName();
-        string playerPosition = PlayerPosition();
-        int playerPick = PlayerPick();
-
         // Arrays de time
         // Array de todos times da NBA
         string[] allNbaTeams = new string[]
@@ -83,6 +78,15 @@ class NbaSim
             "Washington Wizards"
         }; 
 
+        // Variáveis do Player
+        string playerName = PlayerName();
+        string playerPosition = PlayerPosition();
+        int playerPick = PlayerPick();
+        string playerTeam = string.Empty;
+        Draft(ref playerTeam, allNbaTeams, playerPick, playerName);
+
+        
+
     }
 
     public static void SpaceLines()
@@ -143,6 +147,20 @@ class NbaSim
         int pick = random.Next(1, 31);
 
         return pick;
+    }
+    
+    public static void Draft(ref string playerTeam, string [] teams, int pick, string name)
+    {
+
+        Random random = new Random();
+
+        int teamnuber = random.Next(1, 31);
+
+        SpaceLines();
+        Console.WriteLine($"O {teams[teamnuber]} seleciona {name} na {pick}º do Draft da NBA!");
+        Console.WriteLine();
+        Console.WriteLine($"Parabéns!");
+
     }
 
 }
