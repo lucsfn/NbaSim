@@ -3,7 +3,7 @@ Funções que precisarão serem implementadas:
 1- Função de nome do jogador, [PlayerName] OK
 2- Função de posição do jogador, [PlayerPosition] OK
 3- Função de espaçamento no chat, [SpaceLines] OK
-4- Função de Draft do Time, [TeamDraft] (pick OK + time que escolheu)
+4- Função de Draft do Time, [TeamDraft] (pick OK + time que escolheu) OK
 5- Função de OVR como rookie, [RookieOverall]
 X - Tipo de jogador de acordo com a posição, [TypePlayer]
 6- Função de GOAT, [GoatStatus] (incremento no overall)
@@ -19,7 +19,7 @@ X - Tipo de jogador de acordo com a posição, [TypePlayer]
 16- Função da Final da Nba, [NBAFinal]
 17- Função para FVMP, [FMVP]
 18- Função de simulação dos stats individuais nos playoffs, [PStats]
-19- Função para determinar a conferência, [TeamConference]
+19- Função para determinar a conferência, [TeamConference] OK
 20- Função para calcular o overall tota, [OVR]
 21- Função para calcular os stats totais de temporada regular [TotalStatsRS]
 21- Função para calcular os stats totais de temporada regular [TotalStatsP]

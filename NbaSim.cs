@@ -78,15 +78,26 @@ class NbaSim
             "Washington Wizards"
         }; 
 
+        // Mensagem de Bem-vindo
+        Welcome();
+
         // Variáveis do Player
         string playerName = PlayerName();
         string playerPosition = PlayerPosition();
         int playerPick = PlayerPick();
         string playerTeam = string.Empty;
-        Draft(ref playerTeam, allNbaTeams, playerPick, playerName);
-
         
+        // Simulação do Draft
+        Draft(ref playerTeam, allNbaTeams, playerPick, playerName);
+        // Conferência do time
+        string teamConference = TeamConference(playerTeam, easternNbaTeams, westernNbaTeams);
+        
+    }
 
+    public static void Welcome()
+    {
+        SpaceLines();
+        Console.WriteLine("Bem-vindo ao NBA SIM!");
     }
 
     public static void SpaceLines()
@@ -148,7 +159,7 @@ class NbaSim
 
         return pick;
     }
-    
+
     public static void Draft(ref string playerTeam, string [] teams, int pick, string name)
     {
 
@@ -163,4 +174,18 @@ class NbaSim
 
     }
 
+    public static string TeamConference(string team, string [] east, string [] west)
+    {
+        string conference = string.Empty;
+
+        if (east.Contains(team))
+        {
+            conference =  "Leste";
+        } else 
+        {
+            conference = "Oeste";
+        }
+
+        return conference;
+    }
 }
