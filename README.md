@@ -5,6 +5,7 @@ Funções que precisarão serem implementadas:
 3- Função de espaçamento no chat, [SpaceLines] OK
 4- Função de Draft do Time, [TeamDraft] (pick + time que escolheu)
 5- Função de OVR como rookie, [RookieOverall]
+X - Tipo de jogador de acordo com a posição, [TypePlayer]
 6- Função de GOAT, [GoatStatus] (incremento no overall)
 7- Função de Cálculo da Força do time, [TeamForce]
 8- Função de Simulação da Temporada Regular, [RegularSeason] (baseada em fatores como força do time, e overall do player)
