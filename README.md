@@ -27,3 +27,4 @@ X - Tipo de jogador de acordo com a posição, [TypePlayer]
 23- Função para calcular qual temporada o jogador está, [CurrentSeason]
 24- Função para calcular quantidade de prêmios individuais e coletivos, [Titles]
 25- Imprimir menu com opções, [Menu] (Imprimir 1- Continuar simulação, 2- Parar Simulação, 3- Imprimir Stats totais, 4- Imprimir prêmios )
+X - Função de Free agency, [FreeAgency]
