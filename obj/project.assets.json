@@ -8,24 +8,19 @@
     "net8.0": []
   },
   "packageFolders": {
-    "C:\\Users\\Isaias\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\1529159\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Isaias\\Desktop\\workspace\\ATP\\NbaSim\\nbaSim.csproj",
+      "projectUniqueName": "C:\\Users\\1529159\\Desktop\\workspace\\c#\\NbaSim\\nbaSim.csproj",
       "projectName": "nbaSim",
-      "projectPath": "C:\\Users\\Isaias\\Desktop\\workspace\\ATP\\NbaSim\\nbaSim.csproj",
-      "packagesPath": "C:\\Users\\Isaias\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Isaias\\Desktop\\workspace\\ATP\\NbaSim\\obj\\",
+      "projectPath": "C:\\Users\\1529159\\Desktop\\workspace\\c#\\NbaSim\\nbaSim.csproj",
+      "packagesPath": "C:\\Users\\1529159\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\1529159\\Desktop\\workspace\\c#\\NbaSim\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Isaias\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\1529159\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -45,11 +40,6 @@
         "warnAsError": [
           "NU1605"
         ]
-      },
-      "restoreAuditProperties": {
-        "enableAudit": "true",
-        "auditLevel": "low",
-        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -71,7 +61,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
